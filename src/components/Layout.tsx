@@ -22,6 +22,14 @@ function Layout() {
 
   return (
     <div className="flex min-h-screen flex-col bg-background">
+        
+<a
+  href="#conteudo-principal"
+  className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[100] focus:rounded-xl focus:bg-white focus:px-5 focus:py-3 focus:font-bold focus:text-primary focus:shadow-xl"
+>
+  Pular para o conteúdo principal
+</a>
+
       <header className="sticky top-0 z-50 border-b border-slate-200 bg-white/95 backdrop-blur-md">
         <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 py-4">
           <Link
@@ -104,9 +112,11 @@ function Layout() {
         )}
       </header>
 
-      <div className="flex-1">
-        <Outlet />
-      </div>
+      
+<div id="conteudo-principal" tabIndex={-1} className="flex-1">
+  <Outlet />
+</div>
+
 
       <footer className="bg-primary px-6 py-12 text-white">
         <div className="mx-auto flex max-w-6xl flex-col justify-between gap-8 md:flex-row">
