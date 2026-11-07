@@ -1,0 +1,29 @@
+
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #123b50;
+  --color-secondary: #087f8c;
+  --color-highlight: #2bbfa8;
+  --color-background: #f3f7f6;
+  --color-accent: #e6b45d;
+
+  --font-sans: "Segoe UI", Arial, sans-serif;
+}
+
+:root {
+  font-family: var(--font-sans);
+  color: #123b50;
+  background-color: #f3f7f6;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button, a {
+  -webkit-tap-highlight-color: transparent;
+}
