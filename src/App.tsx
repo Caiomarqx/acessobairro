@@ -2,6 +2,7 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
+import Sobre from './pages/Sobre'
 
 function PaginaEmConstrucao({ titulo }: { titulo: string }) {
   return (
@@ -33,7 +34,7 @@ function App() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Home />} />
 
-          <Route path="sobre" element={<PaginaEmConstrucao titulo="Sobre" />} />
+          <Route path="sobre" element={<Sobre />} />
           <Route path="integrantes" element={<PaginaEmConstrucao titulo="Integrantes" />} />
           <Route path="faq" element={<PaginaEmConstrucao titulo="Perguntas frequentes" />} />
           <Route path="contato" element={<PaginaEmConstrucao titulo="Contato" />} />
