@@ -27,3 +27,22 @@ body {
 button, a {
   -webkit-tap-highlight-color: transparent;
 }
+
+
+/* Destaque de foco para navegação por teclado */
+:focus-visible {
+  outline: 3px solid #087f8c;
+  outline-offset: 3px;
+}
+
+/* Respeita a preferência por movimento reduzido */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
