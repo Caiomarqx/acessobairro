@@ -18,6 +18,8 @@ A proposta permite registrar e consultar ocorrências como calçadas danificadas
 - Tailwind CSS 4
 - React Router
 - Fetch API
+- Vitest
+- React Testing Library
 - Oxlint
 
 O Front-end será integrado a uma API REST desenvolvida em Java.
@@ -71,27 +73,67 @@ http://localhost:5173/
 | `npm run build` | Compilar para produção |
 | `npm run lint` | Verificar problemas no código |
 | `npm run preview` | Visualizar o build localmente |
+| `npm run test` | Executar os testes automatizados |
+
+## Testes automatizados
+
+O AcessoBairro utiliza Vitest e React Testing Library para validar o funcionamento de componentes e páginas do Front-end.
+
+Para executar os testes:
+
+`npm run test`
+
+### Testes implementados
+
+Atualmente, o projeto possui 12 testes automatizados:
+
+- **Home (4 testes):** título principal, navegação para cadastro e listagem de ocorrências e identificação de conteúdo demonstrativo.
+- **Sobre (4 testes):** título principal, pilares do projeto, navegação e aviso sobre o caráter acadêmico da plataforma.
+- **Layout (4 testes):** link de acessibilidade, navegação para cadastro, abertura e fechamento do menu mobile e navegação entre páginas.
+
+### Validação automática
+
+O GitHub Actions executa as seguintes verificações em pull requests destinados à branch `main` e em pushes para ela:
+
+1. Instalação das dependências com `npm ci`.
+2. Análise de código com `npm run lint`.
+3. Testes automatizados com `npm run test`.
+4. Compilação de produção com `npm run build`.
+
+Antes de abrir um Pull Request, recomenda-se executar essas verificações localmente.
+
+Os testes atuais verificam funcionalidades específicas e não substituem os testes manuais de acessibilidade, responsividade e integração com a API.
 
 ## Estrutura do Front-end
 
-```text
+
 acessobairro/
 ├── public/
 ├── src/
 │   ├── assets/
 │   ├── components/
-│   │   └── Layout.tsx
+│   │   ├── FeedbackStates.tsx
+│   │   ├── Layout.tsx
+│   │   └── Layout.test.tsx
 │   ├── pages/
-│   │   └── Home.tsx
+│   │   ├── Home.tsx
+│   │   ├── Home.test.tsx
+│   │   ├── Sobre.tsx
+│   │   └── Sobre.test.tsx
 │   ├── services/
 │   │   └── apiClient.ts
+│   ├── test/
+│   │   └── setup.ts
 │   ├── App.tsx
 │   ├── index.css
 │   └── main.tsx
+├── .github/
+│   └── workflows/
+│       └── ci.yml
 ├── .env.example
 ├── package.json
-└── vite.config.ts
-```
+├── vite.config.ts
+└── vitest.config.ts
 
 Outras páginas e componentes serão adicionados conforme o desenvolvimento.
 
@@ -161,6 +203,7 @@ Antes de publicar, execute:
 ```bash
 npm run build
 npm run lint
+npm run test
 ```
 
 Além disso, teste manualmente a funcionalidade modificada.
