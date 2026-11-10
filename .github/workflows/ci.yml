@@ -28,8 +28,12 @@ jobs:
       - name: Instalar dependencias
         run: npm ci
 
+
       - name: Verificar qualidade do codigo
         run: npm run lint
+
+      - name: Executar testes automatizados
+        run: npm run test
 
       - name: Compilar projeto
         run: npm run build

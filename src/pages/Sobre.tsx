@@ -31,10 +31,12 @@ function Sobre() {
             Conheça nossa iniciativa
           </span>
 
-          <h1 className="mt-7 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-primary md:text-6xl">
-            A cidade deve ser acessível
-            <span className="text-secondary"> para todos.</span>
-          </h1>
+
+<h1 className="mt-7 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-primary md:text-6xl">
+  A cidade deve ser acessível{' '}
+  <span className="text-secondary">para todos.</span>
+</h1>
+
 
           <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">
             O AcessoBairro nasceu como uma proposta acadêmica
