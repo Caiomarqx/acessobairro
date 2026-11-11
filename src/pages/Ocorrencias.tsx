@@ -1,5 +1,6 @@
 import { useSearchParams } from 'react-router-dom'
-import { EmptyState } from '../components/FeedbackStates'
+import { EmptyState, ErrorState, LoadingState } from '../components/FeedbackStates'
+import { useOcorrenciasDemonstracao } from '../hooks/useOcorrenciasDemonstracao'
 import OcorrenciaCard from '../components/OcorrenciaCard'
 import { ocorrenciasDemonstracao, rotulosStatus } from '../data/ocorrenciasDemonstracao'
 
@@ -12,12 +13,13 @@ function normalizarBusca(texto: string) {
 
 export default function Ocorrencias() {
   const [parametros, setParametros] = useSearchParams()
+  const { dados, erro, carregando, tentarNovamente } = useOcorrenciasDemonstracao()
   const busca = parametros.get('busca') ?? ''
   const categoria = parametros.get('categoria') ?? ''
   const status = parametros.get('status') ?? ''
   const buscaNormalizada = normalizarBusca(busca)
 
-  const resultados = ocorrenciasDemonstracao.filter((item) =>
+  const resultados = dados.filter((item) =>
     (!categoria || item.tipoBarreira === categoria) &&
     (!status || item.status === status) &&
     [item.descricao, item.bairro, item.endereco, item.tipoBarreira].some(
@@ -33,7 +35,9 @@ export default function Ocorrencias() {
   }
 
   function limparFiltros() {
-    setParametros({}, { replace: true, preventScrollReset: true })
+    const proximos = new URLSearchParams(parametros)
+    for (const chaveFiltro of ['busca', 'categoria', 'status']) proximos.delete(chaveFiltro)
+    setParametros(proximos, { replace: true, preventScrollReset: true })
   }
 
   return (
@@ -70,11 +74,20 @@ export default function Ocorrencias() {
             Limpar filtros
           </button>
         </fieldset>
-        <p role="status" className="text-sm text-slate-700">
-          {resultados.length === 1 ? '1 ocorrência encontrada' : `${resultados.length} ocorrências encontradas`}
-        </p>
-        {resultados.length === 0 ? (
-          <EmptyState titulo="Nenhuma ocorrência encontrada" descricao="Altere a pesquisa ou limpe os filtros para ver outros resultados." />
+        {!carregando && !erro && (
+          <p role="status" className="text-sm text-slate-700">
+            {resultados.length === 1 ? '1 ocorrência encontrada' : `${resultados.length} ocorrências encontradas`}
+          </p>
+        )}
+        {carregando ? (
+          <LoadingState mensagem="Carregando ocorrências..." />
+        ) : erro ? (
+          <ErrorState mensagem={erro} aoTentarNovamente={tentarNovamente} />
+        ) : resultados.length === 0 ? (
+          <EmptyState
+            titulo={dados.length === 0 ? 'Nenhuma ocorrência registrada' : 'Nenhuma ocorrência encontrada'}
+            descricao={dados.length === 0 ? 'Ainda não há relatos para exibir nesta demonstração.' : 'Altere a pesquisa ou limpe os filtros para ver outros resultados.'}
+          />
         ) : (
           <ul className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {resultados.map((item) => (
