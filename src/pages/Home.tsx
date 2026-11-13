@@ -14,10 +14,12 @@ function Home() {
         Mobilidade urbana e inclusão
       </span>
 
-      <h1 className="mt-7 text-4xl font-bold leading-tight tracking-tight text-primary md:text-5xl xl:text-6xl">
-        A acessibilidade começa com a
-        <span className="text-secondary"> sua voz.</span>
-      </h1>
+
+<h1 className="mt-7 text-4xl font-bold leading-tight tracking-tight text-primary md:text-5xl xl:text-6xl">
+  A acessibilidade começa com a{' '}
+  <span className="text-secondary">sua voz.</span>
+</h1>
+
 
       <p className="mt-6 max-w-xl text-lg leading-8 text-slate-600">
         Calçadas danificadas, rampas ausentes e caminhos
