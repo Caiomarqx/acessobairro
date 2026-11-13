@@ -85,11 +85,12 @@ Para executar os testes:
 
 ### Testes implementados
 
-Atualmente, o projeto possui 12 testes automatizados:
+Atualmente, o projeto possui 18 testes automatizados:
 
 - **Home (4 testes):** título principal, navegação para cadastro e listagem de ocorrências e identificação de conteúdo demonstrativo.
 - **Sobre (4 testes):** título principal, pilares do projeto, navegação e aviso sobre o caráter acadêmico da plataforma.
 - **Layout (4 testes):** link de acessibilidade, navegação para cadastro, abertura e fechamento do menu mobile e navegação entre páginas.
+- **Cliente HTTP (6 testes):** leitura de respostas JSON (200), tratamento de respostas sem conteúdo (204), erros HTTP (404 e 500), ausência de `VITE_API_URL` e rejeição de caminhos inválidos.
 
 ### Validação automática
 
@@ -107,7 +108,15 @@ Os testes atuais verificam funcionalidades específicas e não substituem os tes
 ## Estrutura do Front-end
 
 
+
+```text
 acessobairro/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── docs/
+│   ├── contrato-api-ocorrencias.md
+│   └── roteiro-testes-integracao.md
 ├── public/
 ├── src/
 │   ├── assets/
@@ -121,19 +130,21 @@ acessobairro/
 │   │   ├── Sobre.tsx
 │   │   └── Sobre.test.tsx
 │   ├── services/
-│   │   └── apiClient.ts
+│   │   ├── apiClient.ts
+│   │   └── apiClient.test.ts
 │   ├── test/
 │   │   └── setup.ts
+│   ├── types/
+│   │   └── api.ts
 │   ├── App.tsx
 │   ├── index.css
 │   └── main.tsx
-├── .github/
-│   └── workflows/
-│       └── ci.yml
 ├── .env.example
 ├── package.json
 ├── vite.config.ts
 └── vitest.config.ts
+```
+
 
 Outras páginas e componentes serão adicionados conforme o desenvolvimento.
 
@@ -237,9 +248,24 @@ Antes do merge:
 
 ## Integração com o back-end
 
-Os nomes dos campos, endpoints e regras de negócio precisam ser alinhados com a equipe responsável pelo Java.
 
-Não considere caminhos ou estruturas de resposta definitivos antes dessa validação.
+O Front-end foi preparado para consumir a API REST desenvolvida em Java pela equipe.
+
+A estrutura de integração inclui:
+
+- **Cliente HTTP:** `src/services/apiClient.ts`, responsável pelas requisições e pelo tratamento básico de respostas e erros.
+- **Tipos TypeScript:** `src/types/api.ts`, com interfaces baseadas nos DTOs recebidos da API Java.
+- **Contrato de integração:** `docs/contrato-api-ocorrencias.md`, com endpoints, campos e regras documentados.
+- **Roteiro de testes:** `docs/roteiro-testes-integracao.md`, com cenários para validar React, Java, Render e Oracle.
+
+Os contratos foram preparados com base no código Java disponibilizado pela equipe.
+
+**Situação atual:** a comunicação real entre o Front-end, a API que será publicada no Render e o banco Oracle ainda precisa ser validada.
+
+Os testes automatizados do cliente HTTP utilizam respostas simuladas e não comprovam a conectividade com o banco de dados.
+
+Antes da publicação definitiva, a equipe também deverá revisar a proteção dos endpoints de escrita e evitar a exposição de credenciais.
+
 
 ## Acessibilidade
 
