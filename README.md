@@ -85,12 +85,22 @@ Para executar os testes:
 
 ### Testes implementados
 
-Atualmente, o projeto possui 18 testes automatizados:
+Atualmente, a branch `main` possui 50 testes automatizados, distribuídos em 10 arquivos:
 
-- **Home (4 testes):** título principal, navegação para cadastro e listagem de ocorrências e identificação de conteúdo demonstrativo.
-- **Sobre (4 testes):** título principal, pilares do projeto, navegação e aviso sobre o caráter acadêmico da plataforma.
-- **Layout (4 testes):** link de acessibilidade, navegação para cadastro, abertura e fechamento do menu mobile e navegação entre páginas.
-- **Cliente HTTP (6 testes):** leitura de respostas JSON (200), tratamento de respostas sem conteúdo (204), erros HTTP (404 e 500), ausência de `VITE_API_URL` e rejeição de caminhos inválidos.
+- **Home (4 testes):** título principal, navegação e identificação de conteúdo demonstrativo.
+- **Sobre (4 testes):** apresentação do projeto, navegação e aviso sobre o caráter acadêmico.
+- **Layout (4 testes):** acessibilidade, navegação e menu responsivo.
+- **Cliente HTTP Java (6 testes):** respostas JSON, erros HTTP, configuração da API e validação de caminhos.
+- **Cliente HTTP Flask (6 testes):** comunicação com a IA, envio de JSON, tratamento de erros, configuração e cancelamento.
+- **Mapeamento IA → Java (8 testes):** correspondência das cinco categorias, normalização de nomes e utilização de IDs retornados pela API.
+- **Conversões IA ↔ Java (5 testes):** conversão de passagem alternativa entre S/N e SIM/NAO.
+- **Hook de consultas Java (4 testes):** cancelamento de requisições antigas, timeout de 75 segundos, ausência de configuração e respostas demoradas.
+- **Páginas de ocorrências (6 testes):** pesquisa, filtros, navegação, paginação, lista vazia, erros HTTP e recuperação do histórico.
+- **Utilitários de ocorrências (3 testes):** combinação de filtros, ordenação e formatação de datas.
+
+Os testes automatizados utilizam respostas simuladas quando necessário e não realizam alterações no banco Oracle.
+
+A integração com a API Java foi validada localmente e em produção após o merge do PR #11. A comunicação completa com a API Flask ainda depende de sua publicação e integração ao formulário.
 
 ### Validação automática
 
@@ -163,21 +173,48 @@ Outras páginas e componentes serão adicionados conforme o desenvolvimento.
 
 Algumas rotas ainda exibem páginas provisórias.
 
-## Configuração da API
+## Configuração das APIs
 
-O projeto utiliza a variável `VITE_API_URL` para configurar o endereço da API Java.
+O AcessoBairro utiliza duas APIs:
 
-Para preparar o ambiente no PowerShell:
+- **Java (Spring Boot):** responsável pelo cadastro, consulta e gerenciamento das ocorrências no Oracle.
+- **Python (Flask):** responsável por analisar relatos e sugerir categoria e prioridade com Inteligência Artificial.
+
+### Variáveis de ambiente
+
+Copie o arquivo de exemplo:
 
 ```powershell
 Copy-Item .env.example .env
 ```
 
-Depois, preencha `VITE_API_URL` no arquivo `.env` com o endereço confirmado do back-end.
+No arquivo `.env`, configure:
 
-A API ainda depende da integração com o desenvolvimento Java.
+```env
+VITE_API_URL=https://acessobairro-api.onrender.com
+VITE_IA_API_URL=
+```
 
-**Atenção:** nunca coloque senhas, credenciais do Oracle ou tokens secretos em variáveis `VITE_`, pois elas ficam disponíveis no navegador.
+A variável `VITE_API_URL` aponta para a API Java publicada no Render.
+
+A variável `VITE_IA_API_URL` deverá receber a URL pública do Flask quando a equipe concluir sua publicação.
+
+O arquivo `.env` é utilizado no ambiente local e não deve ser enviado ao Git.
+
+Na Vercel, as variáveis precisam ser configuradas nas configurações do projeto e aplicadas por meio de um novo deploy.
+
+**Atenção:** variáveis com prefixo `VITE_` ficam disponíveis no navegador. Nunca utilize essas variáveis para guardar senhas, credenciais do Oracle ou tokens secretos.
+
+### Estado atual da integração
+
+- API Java publicada e acessível no Render.
+- Consultas reais de ocorrências, detalhes e histórico validadas no Front local do PR #11.
+- Cliente HTTP da IA implementado com testes automatizados.
+- Mapeamento das cinco categorias entre Flask e Java implementado.
+- Conversões de passagem alternativa implementadas.
+- Publicação do Flask e integração completa do formulário ainda pendentes.
+
+O PR #11 foi integrado à `main` no commit `e559a51`, e as páginas de consulta estão publicadas em https://acessobairro.vercel.app.
 
 ## Organização da equipe
 
@@ -246,26 +283,62 @@ Antes do merge:
 - Solicite revisão quando necessário.
 - Evite misturar funcionalidades diferentes no mesmo PR.
 
-## Integração com o back-end
 
+## Integração com Java e Inteligência Artificial
 
-O Front-end foi preparado para consumir a API REST desenvolvida em Java pela equipe.
+O AcessoBairro utiliza duas APIs para oferecer suas funcionalidades.
 
-A estrutura de integração inclui:
+### API Java — Spring Boot
 
-- **Cliente HTTP:** `src/services/apiClient.ts`, responsável pelas requisições e pelo tratamento básico de respostas e erros.
-- **Tipos TypeScript:** `src/types/api.ts`, com interfaces baseadas nos DTOs recebidos da API Java.
-- **Contrato de integração:** `docs/contrato-api-ocorrencias.md`, com endpoints, campos e regras documentados.
-- **Roteiro de testes:** `docs/roteiro-testes-integracao.md`, com cenários para validar React, Java, Render e Oracle.
+A API Java está publicada no Render:
 
-Os contratos foram preparados com base no código Java disponibilizado pela equipe.
+https://acessobairro-api.onrender.com
 
-**Situação atual:** a comunicação real entre o Front-end, a API que será publicada no Render e o banco Oracle ainda precisa ser validada.
+Ela é responsável por consultar, cadastrar e gerenciar as ocorrências armazenadas no Oracle.
 
-Os testes automatizados do cliente HTTP utilizam respostas simuladas e não comprovam a conectividade com o banco de dados.
+A comunicação utiliza:
 
-Antes da publicação definitiva, a equipe também deverá revisar a proteção dos endpoints de escrita e evitar a exposição de credenciais.
+- `src/services/apiClient.ts`: cliente HTTP compartilhado.
+- `src/types/api.ts`: contratos TypeScript dos DTOs Java.
+- `docs/contrato-api-ocorrencias.md`: documentação técnica dos endpoints.
 
+### Integração com a API Java
+
+O PR #11 foi integrado à `main` no commit `e559a51`. A listagem, os filtros e os detalhes já foram validados em produção.
+
+Foram testados:
+
+- Listagem de 15 ocorrências.
+- Consulta de detalhes e histórico.
+- Pesquisa, filtros e paginação.
+- Tratamento de ocorrência inexistente.
+- Responsividade em dispositivos móveis.
+- Comunicação com a API publicada no Render.
+
+### API Flask — Inteligência Artificial
+
+O Front-end também possui uma camada preparada para consumir o endpoint `POST /api/analisar-relato`.
+
+Foram implementados:
+
+- `src/services/iaClient.ts`: cliente HTTP da IA.
+- `src/types/ia.ts`: contratos TypeScript do Flask.
+- `src/utils/mapeamentoIAJava.ts`: correspondência das categorias entre IA e Java.
+- `src/utils/conversaoDadosIA.ts`: conversão de passagem alternativa.
+
+Essas funcionalidades possuem testes automatizados.
+
+A publicação da API Flask, a confirmação da regra de impacto e a conexão com o formulário de cadastro ainda estão pendentes.
+
+### Cuidados de segurança
+
+O Oracle é compartilhado com o projeto acadêmico da equipe.
+
+As validações realizadas nesta etapa utilizaram operações de leitura, sem modificar registros do banco.
+
+Antes de disponibilizar funcionalidades de escrita, a equipe deverá revisar os controles de acesso da API Java.
+
+O projeto é demonstrativo e não representa um canal oficial de atendimento da prefeitura.
 
 ## Acessibilidade
 

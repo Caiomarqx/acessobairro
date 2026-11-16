@@ -7,9 +7,28 @@ Validar a comunicação entre o Front-end React, a API REST Java e o banco Oracl
 
 Este roteiro complementa os testes automatizados do Front-end e a documentação do contrato da API.
 
-**Estado atual: PENDENTE DE EXECUÇÃO INTEGRADA.**
+**Estado atual: VALIDAÇÃO PARCIAL CONCLUÍDA — CONSULTAS JAVA VALIDADAS EM PRODUÇÃO.**
 
-A existência do código Java e os testes com respostas simuladas não comprovam que a aplicação está consultando o Oracle real.
+Em 16/11/2026, a integração de leitura foi validada inicialmente no ambiente local, utilizando as telas desenvolvidas no PR #11 e a API Java publicada no Render.
+
+Após a integração do PR #11 à `main` (commit `e559a51`), a versão atualizada foi publicada com sucesso na Vercel:
+
+https://acessobairro.vercel.app
+
+Foram verificados:
+
+- Consulta real de categorias na API Java.
+- Listagem de 15 ocorrências no ambiente de testes.
+- Pesquisa, filtros e paginação.
+- Abertura de detalhes e retorno à listagem.
+- Consulta da ocorrência 8, incluindo informações e histórico.
+- Tratamento de ocorrência inexistente.
+- Responsividade mobile no ambiente local.
+- Carregamento das páginas de consulta em produção, sem bloqueio CORS observado.
+
+A primeira tentativa de carregamento da ocorrência 8 apresentou um erro temporário, mas a consulta posterior funcionou. A causa não foi confirmada e poderá ser investigada caso se repita.
+
+**Ainda pendente:** validação do cadastro de ocorrências e comunicação real com a API Flask de Inteligência Artificial. Os testes realizados não incluíram operações de escrita no Oracle.
 
 ## 2. Referências
 
