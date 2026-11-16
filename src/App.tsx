@@ -3,6 +3,8 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Sobre from './pages/Sobre'
+import Ocorrencias from './pages/Ocorrencias'
+import DetalhesOcorrencia from './pages/DetalhesOcorrencia'
 
 function PaginaEmConstrucao({ titulo }: { titulo: string }) {
   return (
@@ -39,9 +41,9 @@ function App() {
           <Route path="faq" element={<PaginaEmConstrucao titulo="Perguntas frequentes" />} />
           <Route path="contato" element={<PaginaEmConstrucao titulo="Contato" />} />
 
-          <Route path="ocorrencias" element={<PaginaEmConstrucao titulo="Ocorrências" />} />
+          <Route path="ocorrencias" element={<Ocorrencias />} />
           <Route path="ocorrencias/nova" element={<PaginaEmConstrucao titulo="Registrar ocorrência" />} />
-          <Route path="ocorrencias/:id" element={<PaginaEmConstrucao titulo="Detalhes da ocorrência" />} />
+          <Route path="ocorrencias/:id" element={<DetalhesOcorrencia />} />
 
           <Route path="*" element={<PaginaEmConstrucao titulo="Página não encontrada" />} />
         </Route>

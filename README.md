@@ -173,6 +173,16 @@ Outras páginas e componentes serão adicionados conforme o desenvolvimento.
 
 Algumas rotas ainda exibem páginas provisórias.
 
+## Listagem e detalhes de ocorrências
+
+As rotas `/ocorrencias` e `/ocorrencias/:id` consultam a API Java, incluindo histórico, pesquisa, filtros, ordenação e paginação local.
+
+Configure `VITE_API_URL` para utilizar as consultas. Sem essa configuração, a interface apresenta uma mensagem de erro em vez de exibir registros fictícios.
+
+Consulte também a [documentação das consultas de ocorrências](docs/consulta-ocorrencias.md).
+
+A integração com a API Java e os dados do Oracle foi validada localmente e em produção em 16/11/2026, após o merge do PR #11.
+
 ## Configuração das APIs
 
 O AcessoBairro utiliza duas APIs:
@@ -356,3 +366,4 @@ As funcionalidades devem continuar sendo avaliadas durante o desenvolvimento.
 ---
 
 **AcessoBairro — Global Solution FIAP 2026**
+

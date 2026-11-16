@@ -1,3 +1,11 @@
+export class ApiError extends Error {
+  readonly status: number
+  constructor(status: number, mensagem: string) {
+    super(`Erro ${status}: ${mensagem}`)
+    this.name = 'ApiError'
+    this.status = status
+  }
+}
 
 export async function apiRequest<T>(
   caminho: string,
@@ -42,7 +50,7 @@ export async function apiRequest<T>(
       }
     }
 
-    throw new Error(`Erro ${resposta.status}: ${mensagem}`)
+    throw new ApiError(resposta.status, mensagem)
   }
 
   if (resposta.status === 204) {
