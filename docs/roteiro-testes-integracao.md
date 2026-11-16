@@ -93,7 +93,7 @@ Resultado esperado:
 - Lista de bairros em JSON.
 - Campos compatíveis com o contrato Java.
 
-Situação: NÃO EXECUTADO.
+Situação: APROVADO — GET /bairros consultado na API Java publicada no Render em 16/11/2026, com retorno de 8 bairros em JSON. Os campos cdBairro, nmBairro, nmCidade e sgUf foram conferidos e estão compatíveis com o contrato Java. A codificação UTF-8 também foi verificada, confirmando a exibição correta dos acentos.
 
 ### API-03 — Listar ocorrências
 
@@ -117,7 +117,7 @@ Resultado esperado:
 - Status e prioridades seguem os valores definidos no contrato.
 - Campos opcionais ou anuláveis são tratados corretamente.
 
-Situação: NÃO EXECUTADO.
+Situação: APROVADO — Em 16/11/2026, foram verificadas as 15 ocorrências retornadas pelo GET /ocorrencias da API Java publicada no Render. A validação confirmou os identificadores, as descrições, os status permitidos, os relacionamentos com usuario, bairro e categoria e os valores de prioridade, incluindo campos nulos. Nenhuma inconsistência foi encontrada nos campos verificados. Os demais atributos do DTO não foram conferidos individualmente.
 
 ### API-05 — Consultar ocorrência existente
 
@@ -143,7 +143,7 @@ Resultado esperado:
 - Erro JSON com `status` e `mensagem`.
 - O Front apresenta feedback compreensível.
 
-Situação: NÃO EXECUTADO.
+Situação: APROVADO — Em 16/11/2026, a consulta GET /ocorrencias/999999 na API Java publicada no Render retornou HTTP 404 com JSON contendo status 404 e mensagem "Ocorrencia nao encontrada". A mesma URL de ocorrência inexistente foi testada no Front-end publicado na Vercel, que exibiu a mensagem "Ocorrência não encontrada", orientou o usuário e disponibilizou um link para voltar à listagem.
 
 ## 6. Casos de teste do Front-end
 
