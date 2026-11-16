@@ -25,7 +25,7 @@ npm run dev
 - Busca sem acentos; filtros por categoria, status, impacto, bairro, cidade, UF, passagem alternativa e serviço essencial.
 - Ordenação por mais recentes, maior impacto ou maior prioridade sugerida. Prioridades nulas ficam depois das preenchidas.
 - Filtros e página ficam na URL e são preservados ao retornar do detalhe. Alterar um filtro retorna à primeira página.
-- Carregamento, vazio, erro com nova tentativa e 404. Consultas excedendo 20 segundos apresentam opção de nova tentativa; a navegação cancela requisições anteriores.
+- Carregamento, vazio, erro com nova tentativa e 404. Consultas excedendo 75 segundos apresentam opção de nova tentativa; a navegação cancela requisições anteriores.
 - Flags N de passagem alternativa são exibidas como “Não informada como disponível”, pois o cadastro também pode converter “Não sei” em N.
 - Nenhum POST, PUT, PATCH ou DELETE foi acrescentado nesta integração.
 
@@ -41,11 +41,12 @@ npm run build
 
 Os testes de consulta usam respostas HTTP simuladas compatíveis com o contrato. Cobrem pesquisa, filtros, paginação, retorno do detalhe, prioridades nulas, erro de rede e recuperação, 404, ID inválido, histórico com falha e recuperação, timeout, cancelamento e resposta atrasada de outra navegação.
 
-## Falta validar com o ambiente real
+## Validação integrada informada pela equipe — 16/11/2026
 
-1. Receber a URL acessível da API (ou executar o Java localmente).
-2. Abrir `/ocorrencias`, comparar uma ocorrência com o Oracle e abrir seu histórico.
-3. Confirmar CORS no navegador, navegação por teclado e telas em celular e desktop.
-4. Registrar evidências e atualizar o PR após os testes reais.
+A equipe informou aprovação com a API Java no Render: listagem de 15 ocorrências, detalhes e histórico, pesquisa sem acentuação, filtro por status, preservação dos filtros, paginação 10/5, 404 e tela de 390 px sem overflow horizontal. Esses testes foram realizados pela equipe; não são uma nova execução automatizada.
+
+O primeiro acesso apresentou timeout durante a inicialização da API. O limite foi ampliado de 20 para 75 segundos, preservando cancelamento ao navegar e nova tentativa. A configuração de VITE_API_URL em Production na Vercel foi informada pela equipe.
+
+Após o deploy, conferir novamente o primeiro acesso com a API inativa. A revisão por teclado e em desktop não foi confirmada neste relato.
 
 Não executar os scripts de criação/carga novamente na conta já populada. Esta alteração não exige mudança no banco.

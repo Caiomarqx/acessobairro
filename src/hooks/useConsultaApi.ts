@@ -17,7 +17,7 @@ export function useConsultaApi<T>(caminho: string | null) {
     const temporizador = window.setTimeout(() => {
       expirou = true
       controller.abort()
-    }, 20000)
+    }, 75000)
 
     apiRequest<T>(caminho, { signal: controller.signal })
       .then((dados) => {
