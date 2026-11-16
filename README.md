@@ -85,7 +85,7 @@ Para executar os testes:
 
 ### Testes implementados
 
-Atualmente, o projeto possui 18 testes automatizados:
+Atualmente, o projeto possui 30 testes automatizados:
 
 - **Home (4 testes):** título principal, navegação para cadastro e listagem de ocorrências e identificação de conteúdo demonstrativo.
 - **Sobre (4 testes):** título principal, pilares do projeto, navegação e aviso sobre o caráter acadêmico da plataforma.
@@ -162,6 +162,12 @@ Outras páginas e componentes serão adicionados conforme o desenvolvimento.
 | `/ocorrencias/:id` | Detalhes da ocorrência |
 
 Algumas rotas ainda exibem páginas provisórias.
+
+## Listagem e detalhes de ocorrências
+
+As rotas `/ocorrencias` e `/ocorrencias/:id` consultam a API Java, incluindo histórico, pesquisa, filtros, ordenação e paginação local. Configure `VITE_API_URL` para utilizá-las; sem configuração, a página informa o erro e não exibe mocks.
+
+Veja [configuração e validação das consultas](docs/consulta-ocorrencias.md). Os testes automatizados utilizam respostas simuladas; a validação com Oracle e o endereço publicado da API ainda estão pendentes.
 
 ## Configuração da API
 
@@ -283,3 +289,4 @@ As funcionalidades devem continuar sendo avaliadas durante o desenvolvimento.
 ---
 
 **AcessoBairro — Global Solution FIAP 2026**
+
