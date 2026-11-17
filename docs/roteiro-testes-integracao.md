@@ -156,7 +156,7 @@ Resultado esperado:
 - Exibição dos dados após sucesso.
 - Ausência de informações fictícias apresentadas como registros reais.
 
-Situação: PARCIALMENTE VALIDADO — A listagem de ocorrências carregou dados reais da API Java no Front-end publicado em 16/11/2026. O indicador visual de carregamento foi coberto por testes automatizados, mas ainda não foi confirmado especificamente na validação manual em produção.
+Situação: APROVADO — Em 17/11/2026, o indicador de carregamento foi validado manualmente no Front-end publicado na Vercel. Com a aplicação previamente carregada, foi simulada uma conexão lenta pelo DevTools do navegador e realizada a navegação para /ocorrencias sem atualizar a página. A interface permaneceu utilizável e exibiu corretamente o indicador "Carregando ocorrências..." durante a consulta à API Java. Após a resposta da API, o indicador desapareceu e as ocorrências foram exibidas normalmente. O cenário também possui cobertura por testes automatizados.
 
 ### FRONT-02 — Pesquisa e filtros
 
