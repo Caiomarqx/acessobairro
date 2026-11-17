@@ -230,7 +230,7 @@ Resultado esperado:
 - Ausência de bloqueio CORS.
 - Nenhuma credencial do Oracle aparece no Front.
 
-Situação: PARCIALMENTE VALIDADO — Em 16/11/2026, o Front-end publicado na Vercel consultou a API Java hospedada no Render e exibiu dados reais das ocorrências, sem bloqueio CORS observado. Ainda falta uma verificação específica para confirmar que nenhuma credencial sensível está exposta no navegador.
+Situação: APROVADO PARA CONSULTAS GET — Em 17/11/2026, a comunicação entre o Front-end publicado na Vercel e a API Java hospedada no Render foi validada pelo DevTools do navegador. A requisição GET /ocorrencias utilizou HTTPS, retornou HTTP 200 e não apresentou bloqueio CORS. Foram inspecionados os cabeçalhos da requisição e o JSON de resposta com 15 ocorrências, sem identificação de senhas, tokens secretos ou credenciais de conexão com o Oracle. Também foram revisados os arquivos apiClient.ts, iaClient.ts, ocorrenciasService.ts e .env.example, sem identificação de credenciais embutidas. A verificação se limita ao fluxo de leitura e não constitui uma auditoria completa de segurança. A proteção dos endpoints de escrita permanece pendente de revisão.
 
 ### INT-02 — Consulta ao Oracle
 
@@ -297,20 +297,22 @@ Evidências recomendadas:
 
 ## 10. Validações automatizadas existentes
 
-O Front-end possui 50 testes automatizados em 10 arquivos, incluindo:
+O Front-end possui 58 testes automatizados em 12 arquivos, incluindo:
 
 - Home: 4 testes.
 - Sobre: 4 testes.
-- Layout: 4 testes.
+- Integrantes: 4 testes.
+- Layout: 5 testes.
 - Cliente HTTP Java: 6 testes.
 - Cliente HTTP Flask: 6 testes.
+- Serviço de cadastro de ocorrências: 3 testes.
 - Mapeamento IA → Java: 8 testes.
 - Conversões IA ↔ Java: 5 testes.
 - Hook de consultas Java: 4 testes.
 - Páginas de ocorrências: 6 testes.
 - Utilitários de ocorrências: 3 testes.
 
-Em 16/11/2026, os 50 testes passaram, o lint apresentou zero erros e avisos, e o build de produção foi concluído com sucesso.
+Em 16/11/2026, os 58 testes passaram, o lint apresentou zero erros e avisos, e o build de produção foi concluído com sucesso.
 
 Os testes automatizados utilizam respostas simuladas quando necessário e não substituem a validação com as APIs reais.
 
