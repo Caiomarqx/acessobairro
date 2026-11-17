@@ -297,7 +297,7 @@ Evidências recomendadas:
 
 ## 10. Validações automatizadas existentes
 
-O Front-end possui 58 testes automatizados em 12 arquivos, incluindo:
+O Front-end possui 64 testes automatizados em 12 arquivos, incluindo:
 
 - Home: 4 testes.
 - Sobre: 4 testes.
@@ -307,12 +307,12 @@ O Front-end possui 58 testes automatizados em 12 arquivos, incluindo:
 - Cliente HTTP Flask: 6 testes.
 - Serviço de cadastro de ocorrências: 3 testes.
 - Mapeamento IA → Java: 8 testes.
-- Conversões IA ↔ Java: 5 testes.
+- Conversões IA ↔ Java: 11 testes.
 - Hook de consultas Java: 4 testes.
 - Páginas de ocorrências: 6 testes.
 - Utilitários de ocorrências: 3 testes.
 
-Em 16/11/2026, os 58 testes passaram, o lint apresentou zero erros e avisos, e o build de produção foi concluído com sucesso.
+Em 17/11/2026, os 64 testes passaram, o lint apresentou zero erros e avisos, e o build de produção foi concluído com sucesso.
 
 Os testes automatizados utilizam respostas simuladas quando necessário e não substituem a validação com as APIs reais.
 
