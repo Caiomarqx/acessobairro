@@ -216,7 +216,7 @@ Resultado esperado:
 - Campos com rótulos compreensíveis.
 - Mensagens de estado perceptíveis.
 
-Situação: PARCIALMENTE VALIDADO — Em 16/11/2026, o layout da listagem e dos detalhes foi verificado localmente na largura mobile de 390 px, sem problemas visuais identificados. Também foi realizada uma validação manual de navegação por teclado na versão publicada na Vercel. Foram confirmados o funcionamento do link "Pular para o conteúdo principal", o acesso à pesquisa, a utilização dos filtros de categoria e status, a abertura dos detalhes de uma ocorrência e o retorno à listagem, todos sem utilizar o mouse. Os testes automatizados de navegação também foram aprovados. Ainda faltam verificações específicas com leitores de tela, contraste e outras tecnologias assistivas.
+Situação: APROVADO NOS CENÁRIOS MANUAIS VERIFICADOS — Em 16/11/2026, foram validadas a responsividade em 390 px e a navegação por teclado na versão publicada na Vercel. Em 17/11/2026, foram realizadas verificações adicionais: o Narrador do Windows anunciou corretamente os elementos percorridos com Tab; o texto informativo apresentou contraste de 9,57:1 (WCAG AAA); o botão "Registrar barreira" apresentou contraste calculado de 4,75:1 (WCAG AA); a interface permaneceu legível e utilizável com zoom de 200%; e a visualização em 320 px manteve os textos legíveis, os filtros funcionais e os elementos sem cortes. Os resultados aprovam os cenários testados, mas não constituem uma auditoria completa de acessibilidade ou certificação de conformidade WCAG.
 
 ## 7. Integração Vercel × Render
 
