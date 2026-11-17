@@ -190,7 +190,7 @@ Resultado esperado:
 - Orientação para alterar ou limpar os filtros.
 - Nenhuma tela em branco sem explicação.
 
-Situação: PARCIALMENTE VALIDADO — O estado de lista sem resultados foi verificado nos testes automatizados do Front-end, aprovados em 16/11/2026. Ainda falta confirmar manualmente esse cenário na versão publicada na Vercel.
+Situação: APROVADO — Em 16/11/2026, o estado sem resultados foi validado manualmente no Front-end publicado na Vercel. Ao pesquisar por "zzzxqv987654", a interface exibiu "Nenhuma ocorrência encontrada", a orientação para alterar a pesquisa ou limpar os filtros e a contagem de 0 ocorrências. Após selecionar "Limpar filtros", a listagem voltou a exibir os registros retornados pela API Java. O cenário também possui cobertura por testes automatizados.
 
 ### FRONT-05 — Falha de comunicação
 
