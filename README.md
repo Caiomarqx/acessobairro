@@ -85,7 +85,7 @@ Para executar os testes:
 
 ### Testes implementados
 
-A suíte de testes possui 58 testes automatizados, distribuídos em 12 arquivos:
+A suíte de testes possui 64 testes automatizados, distribuídos em 12 arquivos:
 
 - **Home (4 testes):** título principal, navegação e identificação de conteúdo demonstrativo.
 - **Sobre (4 testes):** apresentação do projeto, navegação e aviso sobre o caráter acadêmico.
@@ -95,7 +95,7 @@ A suíte de testes possui 58 testes automatizados, distribuídos em 12 arquivos:
 - **Cliente HTTP Flask (6 testes):** comunicação com a IA, envio de JSON, tratamento de erros, configuração e cancelamento.
 - **Serviço de cadastro de ocorrências (3 testes):** envio de cadastro via POST com JSON, tratamento de erros de validação e ausência de configuração da API.
 - **Mapeamento IA → Java (8 testes):** correspondência das cinco categorias, normalização de nomes e utilização de IDs retornados pela API.
-- **Conversões IA ↔ Java (5 testes):** conversão de passagem alternativa entre S/N e SIM/NAO.
+- **Conversões IA ↔ Java (11 testes):** conversão de passagem alternativa entre S/N e SIM/NAO, conversão de impacto numérico (1 a 5) para BAIXO/MEDIO/ALTO e rejeição de valores inválidos.
 - **Hook de consultas Java (4 testes):** cancelamento de requisições antigas, timeout de 75 segundos, ausência de configuração e respostas demoradas.
 - **Páginas de ocorrências (6 testes):** pesquisa, filtros, navegação, paginação, lista vazia, erros HTTP e recuperação do histórico.
 - **Utilitários de ocorrências (3 testes):** combinação de filtros, ordenação e formatação de datas.
