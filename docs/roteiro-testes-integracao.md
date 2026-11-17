@@ -216,7 +216,7 @@ Resultado esperado:
 - Campos com rótulos compreensíveis.
 - Mensagens de estado perceptíveis.
 
-Situação: PARCIALMENTE VALIDADO — O layout da listagem e dos detalhes foi verificado em ambiente local com largura mobile de 390 px em 16/11/2026, sem problemas visuais identificados. Os testes automatizados também cobrem funcionalidades de navegação. Ainda falta concluir uma avaliação manual específica de acessibilidade por teclado e tecnologias assistivas.
+Situação: PARCIALMENTE VALIDADO — Em 16/11/2026, o layout da listagem e dos detalhes foi verificado localmente na largura mobile de 390 px, sem problemas visuais identificados. Também foi realizada uma validação manual de navegação por teclado na versão publicada na Vercel. Foram confirmados o funcionamento do link "Pular para o conteúdo principal", o acesso à pesquisa, a utilização dos filtros de categoria e status, a abertura dos detalhes de uma ocorrência e o retorno à listagem, todos sem utilizar o mouse. Os testes automatizados de navegação também foram aprovados. Ainda faltam verificações específicas com leitores de tela, contraste e outras tecnologias assistivas.
 
 ## 7. Integração Vercel × Render
 
