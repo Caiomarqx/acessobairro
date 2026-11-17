@@ -6,6 +6,7 @@ const links = [
   { nome: 'Início', caminho: '/' },
   { nome: 'Ocorrências', caminho: '/ocorrencias' },
   { nome: 'Sobre', caminho: '/sobre' },
+  { nome: 'Integrantes', caminho: '/integrantes' },
   { nome: 'FAQ', caminho: '/faq' },
   { nome: 'Contato', caminho: '/contato' },
 ]

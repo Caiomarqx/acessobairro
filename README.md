@@ -85,11 +85,12 @@ Para executar os testes:
 
 ### Testes implementados
 
-Atualmente, a branch `main` possui 53 testes automatizados, distribuídos em 11 arquivos:
+A suíte de testes possui 58 testes automatizados, distribuídos em 12 arquivos:
 
 - **Home (4 testes):** título principal, navegação e identificação de conteúdo demonstrativo.
 - **Sobre (4 testes):** apresentação do projeto, navegação e aviso sobre o caráter acadêmico.
-- **Layout (4 testes):** acessibilidade, navegação e menu responsivo.
+- **Integrantes (4 testes):** identificação acadêmica, nomes e RMs da equipe, áreas de atuação e navegação para a página Sobre.
+- **Layout (5 testes):** acessibilidade, navegação, menu responsivo e link para Integrantes nos menus desktop e mobile.
 - **Cliente HTTP Java (6 testes):** respostas JSON, erros HTTP, configuração da API e validação de caminhos.
 - **Cliente HTTP Flask (6 testes):** comunicação com a IA, envio de JSON, tratamento de erros, configuração e cancelamento.
 - **Serviço de cadastro de ocorrências (3 testes):** envio de cadastro via POST com JSON, tratamento de erros de validação e ausência de configuração da API.

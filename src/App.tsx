@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
 import Layout from './components/Layout'
 import Home from './pages/Home'
 import Sobre from './pages/Sobre'
+import Integrantes from './pages/Integrantes'
 import Ocorrencias from './pages/Ocorrencias'
 import DetalhesOcorrencia from './pages/DetalhesOcorrencia'
 
@@ -37,7 +38,7 @@ function App() {
           <Route index element={<Home />} />
 
           <Route path="sobre" element={<Sobre />} />
-          <Route path="integrantes" element={<PaginaEmConstrucao titulo="Integrantes" />} />
+          <Route path="integrantes" element={<Integrantes />} />
           <Route path="faq" element={<PaginaEmConstrucao titulo="Perguntas frequentes" />} />
           <Route path="contato" element={<PaginaEmConstrucao titulo="Contato" />} />
 

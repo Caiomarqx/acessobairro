@@ -39,6 +39,35 @@ describe('Layout e navegação', () => {
     ).toBeInTheDocument()
   })
 
+  it('exibe Integrantes nos menus desktop e mobile', async () => {
+    const usuario = userEvent.setup()
+    renderLayout()
+
+    const menuPrincipal = screen.getByRole('navigation', {
+      name: /navegação principal/i,
+    })
+
+    expect(
+      within(menuPrincipal).getByRole('link', {
+        name: 'Integrantes',
+      })
+    ).toHaveAttribute('href', '/integrantes')
+
+    await usuario.click(
+      screen.getByRole('button', { name: /abrir menu/i })
+    )
+
+    const menuMobile = screen.getByRole('navigation', {
+      name: /navegação para dispositivos móveis/i,
+    })
+
+    expect(
+      within(menuMobile).getByRole('link', {
+        name: 'Integrantes',
+      })
+    ).toHaveAttribute('href', '/integrantes')
+  })
+
   it('possui link para registrar uma barreira', () => {
     renderLayout()
 
