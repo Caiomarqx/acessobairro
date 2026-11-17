@@ -203,7 +203,7 @@ Resultado esperado:
 
 Usar mocks ou ambiente isolado. Não provocar falhas no Oracle compartilhado.
 
-Situação: PARCIALMENTE VALIDADO — Os testes automatizados aprovados em 16/11/2026 verificaram o tratamento de falhas de comunicação e a opção de tentar novamente. Na versão publicada, a ocorrência 8 apresentou um erro temporário na primeira tentativa, mas carregou normalmente depois. A causa do erro não foi identificada, e ainda falta realizar uma validação manual controlada desse cenário em produção.
+Situação: APROVADO — Em 17/11/2026, foi realizada uma validação manual controlada no Front-end publicado na Vercel. Com a aplicação previamente carregada, a conexão foi simulada como Offline pelo DevTools do navegador e a navegação para /ocorrencias foi realizada sem recarregar a página. A interface permaneceu funcional, exibiu a mensagem "Não foi possível carregar as informações", explicou a falha de conexão com a API e disponibilizou o botão "Tentar novamente". Após restaurar a conexão e acionar o botão, as ocorrências foram carregadas normalmente. O cenário também possui cobertura por testes automatizados.
 
 ### FRONT-06 — Responsividade e acessibilidade
 

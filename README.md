@@ -336,11 +336,11 @@ Foram implementados:
 - `src/services/iaClient.ts`: cliente HTTP da IA.
 - `src/types/ia.ts`: contratos TypeScript do Flask.
 - `src/utils/mapeamentoIAJava.ts`: correspondência das categorias entre IA e Java.
-- `src/utils/conversaoDadosIA.ts`: conversão de passagem alternativa.
+- `src/utils/conversaoDadosIA.ts`: conversão de passagem alternativa e de impacto numérico para os níveis BAIXO, MEDIO e ALTO.
 
 Essas funcionalidades possuem testes automatizados.
 
-A publicação da API Flask, a confirmação da regra de impacto e a conexão com o formulário de cadastro ainda estão pendentes.
+A regra de conversão de impacto foi confirmada com a equipe de IA e implementada no Front-end. A publicação da API Flask, a validação do endpoint real e a conexão com o formulário de cadastro ainda estão pendentes.
 
 ### Cuidados de segurança
 
