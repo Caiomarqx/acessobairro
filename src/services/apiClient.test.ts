@@ -115,4 +115,22 @@ describe('apiRequest', () => {
 
     expect(fetchMock).not.toHaveBeenCalled()
   })
+
+  it('mostra mensagem em português quando a API não responde', async () => {
+    fetchMock.mockRejectedValue(new TypeError('Failed to fetch'))
+
+    await expect(
+      apiRequest('/ocorrencias'),
+    ).rejects.toThrow('Não foi possível conectar à API')
+  })
+
+  it('repassa o cancelamento da requisição sem trocar a mensagem', async () => {
+    fetchMock.mockRejectedValue(
+      new DOMException('Requisição cancelada', 'AbortError'),
+    )
+
+    await expect(
+      apiRequest('/ocorrencias'),
+    ).rejects.toMatchObject({ name: 'AbortError' })
+  })
 })
