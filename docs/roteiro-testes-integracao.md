@@ -241,7 +241,7 @@ Resultado esperado:
 - O Front apresenta valores retornados pelo Java.
 - Nenhuma alteração é realizada no banco durante a verificação.
 
-Situação: PARCIALMENTE VALIDADO — Em 16/11/2026, o Front-end consumiu dados reais de ocorrências disponibilizados pela API Java integrada ao Oracle. Entretanto, ainda não foi realizada a comparação direta entre uma ocorrência retornada pela API e seu registro correspondente no banco, com auxílio do responsável por Database. Nenhuma operação de escrita foi executada nesta validação.
+Situação: APROVADO NO ESCOPO DE LEITURA — Em 18/11/2026, Gabriel (RM573159) forneceu uma consulta SQL reproduzível com LEFT JOIN em tb_categoria e tb_bairro e cinco capturas comparando os registros IDs **1, 3, 5 e 9** do Oracle com o JSON do GET /ocorrencias da API Java publicada no Render. Identificadores, descrições, categorias (ID/nome), bairros (ID/nome), cidade/UF, endereços aproximados e status coincidiram na amostra, sem divergências. Segundo o resumo do responsável, foram executados somente SELECT e GET, sem escrita. Evidências: pacote INT-02_AcessoBairro_Evidencias.zip entregue à equipe e Figuras A14–A16 no Anexo A do documento de Engenharia. Esta conferência não valida POST, todos os registros, variáveis internas do Render ou o ambiente de demonstração separado.
 
 ### INT-03 — Acesso direto às rotas
 
@@ -322,6 +322,7 @@ Considerar a integração validada somente quando:
 
 - [x] A API Java está acessível no Render.
 - [x] As consultas de leitura ao Oracle estão funcionando pela API Java.
+- [x] INT-02: comparação direta entre Oracle e GET da API para os IDs 1, 3, 5 e 9 (18/11/2026), sem divergências na amostra.
 - [x] O Front-end consome respostas reais da API Java.
 - [x] Listagem e detalhes foram validados em produção.
 - [ ] Concluir a validação dos estados de carregamento, vazio e erro em integração real; os cenários automatizados já foram aprovados.
