@@ -22,7 +22,7 @@ A proposta permite registrar e consultar ocorrências como calçadas danificadas
 - React Testing Library
 - Oxlint
 
-O Front-end já consulta dados reais da API REST Java (Spring Boot no Render), incluindo listagem, filtros, detalhes e histórico. A operação de escrita e a integração do formulário seguem pendentes de validação segura no ambiente de demonstração.
+O Front-end consulta a API REST Java (Spring Boot no Render) para listagem, filtros, detalhes e histórico. Em 18/11/2026, o formulário publicado na Vercel foi validado com uma operação real na API Java de demonstração: POST `/ocorrencias` retornou **HTTP 201 Created**, criando a ocorrência nº 18, recuperada depois nos detalhes e na listagem. A API original permanece em modo somente leitura; o ambiente demonstrativo utiliza apenas dados fictícios e não possui autenticação.
 
 ## Pré-requisitos
 
@@ -85,7 +85,7 @@ Para executar os testes:
 
 ### Testes implementados
 
-A suíte de testes possui 64 testes automatizados, distribuídos em 12 arquivos:
+A distribuição abaixo descreve os **64 testes automatizados da etapa anterior (12 arquivos)**. A equipe relatou **74 testes** após as mudanças de 18/11/2026; a distribuição por arquivo ainda precisa ser recontada a partir do CI mais recente:
 
 - **Home (4 testes):** título principal, navegação e identificação de conteúdo demonstrativo.
 - **Sobre (4 testes):** apresentação do projeto, navegação e aviso sobre o caráter acadêmico.
@@ -158,7 +158,7 @@ acessobairro/
 ```
 
 
-A estrutura acima apresenta os arquivos centrais; há também componentes de ocorrência, rotas adicionais, hooks, testes e serviços de integração com Java e Flask. As rotas FAQ, Contato e cadastro ainda podem apresentar conteúdo provisório na versão de referência.
+A estrutura acima apresenta os arquivos centrais; há também componentes de ocorrência, rotas adicionais, hooks, testes e serviços de integração com Java e Flask. Contato e cadastro já foram integrados e verificados; a FAQ continua aguardando o conteúdo definitivo.
 
 ## Rotas da aplicação
 
@@ -173,7 +173,7 @@ A estrutura acima apresenta os arquivos centrais; há também componentes de oco
 | `/ocorrencias/nova` | Cadastro de ocorrência |
 | `/ocorrencias/:id` | Detalhes da ocorrência |
 
-Algumas rotas ainda exibem páginas provisórias.
+A rota `/faq` ainda requer conclusão; as demais rotas devem ser revalidadas após os últimos merges.
 
 ## Listagem e detalhes de ocorrências
 
@@ -207,7 +207,7 @@ VITE_API_URL=https://acessobairro-api.onrender.com
 VITE_IA_API_URL=
 ```
 
-A variável `VITE_API_URL` aponta para a API Java publicada no Render.
+A variável `VITE_API_URL` determina a API Java usada. O exemplo acima aponta para a API original, somente leitura. Na INT-03 (18/11/2026), a Vercel foi configurada com `https://acessobairro-api-demo.onrender.com` e republicada para demonstrar escrita real. Preservar essa configuração durante a avaliação do cadastro.
 
 A variável `VITE_IA_API_URL` deverá receber a URL pública do Flask quando a equipe concluir sua publicação.
 
@@ -225,7 +225,8 @@ Na Vercel, as variáveis precisam ser configuradas nas configurações do projet
 - Mapeamento das cinco categorias entre Flask e Java implementado.
 - Conversões de passagem alternativa implementadas.
 - INT-02 concluída no escopo de leitura em 18/11/2026: comparação direta Oracle × JSON GET da API Java para os IDs 1, 3, 5 e 9, sem divergências nos campos avaliados (evidências no documento de Engenharia e no `docs/roteiro-testes-integracao.md`).
-- Publicação do Flask, integração do formulário e escrita real (POST) no ambiente de demonstração ainda pendentes de validação.
+- **INT-03 concluída no fluxo central (18/11/2026):** formulário do PR #40 executou POST real na Vercel para a API Java demo, com **HTTP 201** e `Location: /ocorrencias/18`. A ocorrência foi recuperada nos detalhes e na listagem, que passou de 16 para 17 registros (evidências A24–A29 no relatório de Engenharia).
+- **Pendente:** integração pública de Flask/IA, testes complementares de duplo envio, erros inválidos e controles de acesso da API demo antes de qualquer uso real.
 
 O PR #11 foi integrado à `main` no commit `e559a51`, e as páginas de consulta estão publicadas em https://acessobairro.vercel.app.
 
@@ -243,8 +244,8 @@ O PR #11 foi integrado à `main` no commit `e559a51`, e as páginas de consulta 
 |---|---|
 | Caio | Estrutura, Home, acessibilidade e integração Front-end |
 | Gabriel | Listagem, detalhes e filtros de ocorrências |
-| Mariana | Formulário de cadastro e FAQ |
-| Rodrigo | Back-end Java e páginas institucionais, conforme disponibilidade |
+| Mariana | Chatbot/IA, FAQ e revisão do fluxo de cadastro |
+| Rodrigo | Back-end Java, Python e formulário de cadastro (PR #40) |
 
 As responsabilidades podem ser ajustadas conforme a necessidade do projeto.
 
@@ -361,7 +362,7 @@ O PR #11 foi integrado à `main` no commit `e559a51`. A listagem, os filtros e o
 
 Foram testados:
 
-- Listagem de 15 ocorrências.
+- Listagem de 15 ocorrências na verificação inicial e 17 registros após a INT-03 no ambiente de demonstração.
 - Consulta de detalhes e histórico.
 - Pesquisa, filtros e paginação.
 - Tratamento de ocorrência inexistente.
@@ -387,9 +388,9 @@ A regra de conversão de impacto foi confirmada com a equipe de IA e implementad
 
 O Oracle é compartilhado com o projeto acadêmico da equipe.
 
-As validações realizadas nesta etapa utilizaram operações de leitura, sem modificar registros do banco.
+Na INT-02 foram utilizadas consultas SELECT/GET no Oracle original, sem escrita. Na INT-03, dados fictícios foram cadastrados pela API Java demo, conectada ao ambiente Oracle isolado conforme configuração informada pela equipe, sem alterar o banco original.
 
-Antes de disponibilizar funcionalidades de escrita, a equipe deverá revisar os controles de acesso da API Java.
+A API Java de demonstração aceita escrita sem autenticação e não deve receber dados reais. CORS não é autenticação: a publicação para usuários reais exigiria controles de acesso e moderação. A API original permanece em somente leitura.
 
 O projeto é demonstrativo e não representa um canal oficial de atendimento da prefeitura.
 
