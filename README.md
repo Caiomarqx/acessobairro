@@ -22,7 +22,7 @@ A proposta permite registrar e consultar ocorrências como calçadas danificadas
 - React Testing Library
 - Oxlint
 
-O Front-end será integrado a uma API REST desenvolvida em Java.
+O Front-end já consulta dados reais da API REST Java (Spring Boot no Render), incluindo listagem, filtros, detalhes e histórico. A operação de escrita e a integração do formulário seguem pendentes de validação segura no ambiente de demonstração.
 
 ## Pré-requisitos
 
@@ -158,9 +158,9 @@ acessobairro/
 ```
 
 
-Outras páginas e componentes serão adicionados conforme o desenvolvimento.
+A estrutura acima apresenta os arquivos centrais; há também componentes de ocorrência, rotas adicionais, hooks, testes e serviços de integração com Java e Flask. As rotas FAQ, Contato e cadastro ainda podem apresentar conteúdo provisório na versão de referência.
 
-## Rotas previstas
+## Rotas da aplicação
 
 | Rota | Página |
 |---|---|
@@ -220,13 +220,22 @@ Na Vercel, as variáveis precisam ser configuradas nas configurações do projet
 ### Estado atual da integração
 
 - API Java publicada e acessível no Render.
-- Consultas reais de ocorrências, detalhes e histórico validadas no Front local do PR #11.
+- Consultas reais de ocorrências, detalhes e histórico validadas no Front e na versão publicada em produção.
 - Cliente HTTP da IA implementado com testes automatizados.
 - Mapeamento das cinco categorias entre Flask e Java implementado.
 - Conversões de passagem alternativa implementadas.
-- Publicação do Flask e integração completa do formulário ainda pendentes.
+- INT-02 concluída no escopo de leitura em 18/11/2026: comparação direta Oracle × JSON GET da API Java para os IDs 1, 3, 5 e 9, sem divergências nos campos avaliados (evidências no documento de Engenharia e no `docs/roteiro-testes-integracao.md`).
+- Publicação do Flask, integração do formulário e escrita real (POST) no ambiente de demonstração ainda pendentes de validação.
 
 O PR #11 foi integrado à `main` no commit `e559a51`, e as páginas de consulta estão publicadas em https://acessobairro.vercel.app.
+
+## Links de avaliação
+
+- **Aplicação publicada (Vercel):** https://acessobairro.vercel.app
+- **Repositório público:** https://github.com/Caiomarqx/acessobairro
+- **API Java no Render:** https://acessobairro-api.onrender.com
+- **Vídeo demonstrativo de Front-end (até 3 minutos):** pendente de gravação/publicação no YouTube; inserir o link antes da entrega.
+- **Contato acadêmico do projeto:** [seção Contato da aplicação](https://acessobairro.vercel.app/contato) e [issues do GitHub](https://github.com/Caiomarqx/acessobairro/issues). A página Contato deve ser revisada antes da entrega.
 
 ## Organização da equipe
 
