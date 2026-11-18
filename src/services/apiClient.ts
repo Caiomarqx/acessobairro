@@ -29,13 +29,25 @@ export async function apiRequest<T>(
     cabecalhos.set('Accept', 'application/json')
   }
 
-  const resposta = await fetch(
-    `${urlBase.replace(/\/+$/, '')}${caminho}`,
-    {
-      ...opcoes,
-      headers: cabecalhos,
+  let resposta: Response
+
+  try {
+    resposta = await fetch(
+      `${urlBase.replace(/\/+$/, '')}${caminho}`,
+      {
+        ...opcoes,
+        headers: cabecalhos,
+      }
+    )
+  } catch (erro) {
+    if (erro instanceof DOMException && erro.name === 'AbortError') {
+      throw erro
     }
-  )
+
+    throw new Error(
+      'Não foi possível conectar à API. Ela pode estar iniciando; aguarde alguns segundos e tente novamente.'
+    )
+  }
 
   if (!resposta.ok) {
     let mensagem = resposta.statusText || 'Erro desconhecido'
