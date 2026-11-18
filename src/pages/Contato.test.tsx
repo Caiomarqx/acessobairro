@@ -23,6 +23,7 @@ describe('Página Contato', () => {
     expect(screen.getByText(/Global Solution 2026\/2 · Turma 1TDSPF/)).toBeInTheDocument()
     expect(screen.getByText(/Esta página não recebe mensagens/)).toBeInTheDocument()
     expect(container.querySelector('form, input, textarea, a[href^="mailto:"], a[href^="tel:"]')).toBeNull()
+    expect(screen.getByRole('link', { name: 'Contatar pelo GitHub' })).toHaveAttribute('href', 'https://github.com/Caiomarqx/acessobairro/issues')
     expect(screen.queryByRole('button')).not.toBeInTheDocument()
     expect(screen.getByText(/não representam solicitações oficiais à prefeitura nem garantem reparo/i)).toBeInTheDocument()
   })
@@ -41,7 +42,7 @@ describe('Página Contato', () => {
   it('permite percorrer os links e ativar a navegação pelo teclado', async () => {
     const user = userEvent.setup()
     abrir()
-    for (const nome of ['Conhecer a equipe', 'Entender o projeto', 'Explorar ocorrências']) {
+    for (const nome of ['Contatar pelo GitHub', 'Conhecer a equipe', 'Entender o projeto', 'Explorar ocorrências']) {
       await user.tab()
       expect(screen.getByRole('link', { name: nome })).toHaveFocus()
     }

@@ -28,8 +28,15 @@ function Contato() {
               Canais de contato
             </h2>
             <p className="mt-6 leading-8 text-slate-600">
-              Ainda não disponibilizamos um e-mail, telefone ou canal público
-              de atendimento do projeto. Esta página não recebe mensagens.
+              Para dúvidas, sugestões ou problemas técnicos, utilize as issues
+              do repositório público do projeto no GitHub. Esta página não recebe mensagens.
+            </p>
+            <a href="https://github.com/Caiomarqx/acessobairro/issues" className="mt-6 inline-flex min-h-11 items-center rounded-lg py-2 font-semibold text-primary underline underline-offset-4 hover:text-secondary">
+              Contatar pelo GitHub
+            </a>
+            <p className="mt-2 text-sm leading-7 text-slate-600">
+              É necessário entrar em uma conta GitHub para abrir uma issue.
+              As mensagens são públicas; não inclua dados pessoais ou senhas.
             </p>
             <p className="mt-4 leading-8 text-slate-600">
               Você pode conhecer os integrantes e as responsabilidades de cada
