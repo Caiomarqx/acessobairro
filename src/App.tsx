@@ -7,6 +7,7 @@ import Integrantes from './pages/Integrantes'
 import Ocorrencias from './pages/Ocorrencias'
 import DetalhesOcorrencia from './pages/DetalhesOcorrencia'
 import Contato from './pages/Contato'
+import NovaOcorrencia from './pages/NovaOcorrencia'
 
 function PaginaEmConstrucao({ titulo }: { titulo: string }) {
   return (
@@ -44,7 +45,7 @@ function App() {
           <Route path="contato" element={<Contato />} />
 
           <Route path="ocorrencias" element={<Ocorrencias />} />
-          <Route path="ocorrencias/nova" element={<PaginaEmConstrucao titulo="Registrar ocorrência" />} />
+          <Route path="ocorrencias/nova" element={<NovaOcorrencia />} />
           <Route path="ocorrencias/:id" element={<DetalhesOcorrencia />} />
 
           <Route path="*" element={<PaginaEmConstrucao titulo="Página não encontrada" />} />
