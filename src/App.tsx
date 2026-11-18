@@ -6,6 +6,7 @@ import Sobre from './pages/Sobre'
 import Integrantes from './pages/Integrantes'
 import Ocorrencias from './pages/Ocorrencias'
 import DetalhesOcorrencia from './pages/DetalhesOcorrencia'
+import Contato from './pages/Contato'
 
 function PaginaEmConstrucao({ titulo }: { titulo: string }) {
   return (
@@ -40,7 +41,7 @@ function App() {
           <Route path="sobre" element={<Sobre />} />
           <Route path="integrantes" element={<Integrantes />} />
           <Route path="faq" element={<PaginaEmConstrucao titulo="Perguntas frequentes" />} />
-          <Route path="contato" element={<PaginaEmConstrucao titulo="Contato" />} />
+          <Route path="contato" element={<Contato />} />
 
           <Route path="ocorrencias" element={<Ocorrencias />} />
           <Route path="ocorrencias/nova" element={<PaginaEmConstrucao titulo="Registrar ocorrência" />} />
