@@ -323,6 +323,38 @@ A comunicação utiliza:
 - `src/types/api.ts`: contratos TypeScript dos DTOs Java.
 - `docs/contrato-api-ocorrencias.md`: documentação técnica dos endpoints.
 
+#### Endpoints usados pelo Front-end
+
+| Método | Endpoint | Onde é usado |
+|---|---|---|
+| GET | `/ocorrencias` | Página Ocorrências (listagem, filtros e paginação) |
+| GET | `/ocorrencias/{id}` | Página de detalhes (`/ocorrencias/:id`) |
+| GET | `/ocorrencias/{id}/atualizacoes` | Histórico na página de detalhes |
+| POST | `/ocorrencias` | Formulário de cadastro (`cadastrarOcorrencia`) |
+
+#### Respostas de erro
+
+Todos os erros da API vêm no mesmo formato, sem stack trace nem SQL:
+
+```json
+{ "status": 404, "mensagem": "Ocorrencia nao encontrada" }
+```
+
+| Status | Quando acontece |
+|---|---|
+| 400 | Campo obrigatório ausente ou valor inválido (Bean Validation) |
+| 403 | API em modo somente leitura (`API_SOMENTE_LEITURA=true` no Render) |
+| 404 | Ocorrência ou rota inexistente |
+| 409 | Regra de negócio violada (ex.: confirmar a própria ocorrência) |
+| 500 | Erro interno, com mensagem genérica |
+
+O `apiClient.ts` lê o campo `mensagem` e lança um `ApiError` com o status. Quando a API não responde (fora do ar ou iniciando no Render), mostra uma mensagem em português em vez de "Failed to fetch".
+
+#### CORS e modo somente leitura
+
+- A API aceita requisições apenas de `https://acessobairro.vercel.app` e do Vite local (`http://localhost:5173` e `http://localhost:4173`).
+- Com `API_SOMENTE_LEITURA=true`, a API bloqueia POST, PUT, PATCH e DELETE com 403. Isso protege o banco da entrega de Banco de Dados. A escrita é liberada quando o Render aponta para o banco de demonstração.
+
 ### Integração com a API Java
 
 O PR #11 foi integrado à `main` no commit `e559a51`. A listagem, os filtros e os detalhes já foram validados em produção.
