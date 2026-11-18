@@ -1,8 +1,16 @@
 import { useState } from 'react'
 import type { FormEvent } from 'react'
+import { Link } from 'react-router-dom'
 import { ErrorState, LoadingState } from '../components/FeedbackStates'
 import { useConsultaApi } from '../hooks/useConsultaApi'
-import type { BairroSaidaDTO, CategoriaSaidaDTO, UsuarioSaidaDTO } from '../types/api'
+import { cadastrarOcorrencia } from '../services/ocorrenciasService'
+import type {
+  BairroSaidaDTO,
+  CategoriaSaidaDTO,
+  OcorrenciaEntradaDTO,
+  OcorrenciaSaidaDTO,
+  UsuarioSaidaDTO,
+} from '../types/api'
 
 const campo = 'w-full min-w-0 rounded-lg border border-slate-500 bg-white px-3 py-2 font-normal text-primary aria-[invalid=true]:border-red-700'
 
@@ -18,6 +26,12 @@ interface FormularioOcorrencia {
 }
 
 type ErrosFormulario = Partial<Record<keyof FormularioOcorrencia, string>>
+
+type ResultadoEnvio =
+  | { tipo: 'sucesso'; ocorrencia: OcorrenciaSaidaDTO }
+  | { tipo: 'erro'; mensagem: string }
+
+const TEMPO_LIMITE_MS = 75000
 
 const formularioVazio: FormularioOcorrencia = {
   cdUsuario: '',
@@ -78,6 +92,19 @@ function validar(dados: FormularioOcorrencia): ErrosFormulario {
   return erros
 }
 
+function montarEntrada(dados: FormularioOcorrencia): OcorrenciaEntradaDTO {
+  return {
+    cdUsuario: Number(dados.cdUsuario),
+    cdBairro: Number(dados.cdBairro),
+    cdCategoria: Number(dados.cdCategoria),
+    dsEnderecoAprox: dados.dsEnderecoAprox.trim(),
+    dsOcorrencia: dados.dsOcorrencia.trim(),
+    nrImpacto: Number(dados.nrImpacto),
+    flPassagemAlternativa: dados.flPassagemAlternativa === 'S' ? 'S' : 'N',
+    flServicoEssencial: dados.flServicoEssencial === 'S' ? 'S' : 'N',
+  }
+}
+
 function MensagemErro({ id, mensagem }: { id: string; mensagem?: string }) {
   if (!mensagem) return null
   return <p id={id} className="text-sm font-semibold text-red-700">{mensagem}</p>
@@ -90,14 +117,17 @@ function NovaOcorrencia() {
 
   const [dados, setDados] = useState<FormularioOcorrencia>(formularioVazio)
   const [erros, setErros] = useState<ErrosFormulario>({})
+  const [enviando, setEnviando] = useState(false)
+  const [resultado, setResultado] = useState<ResultadoEnvio | null>(null)
 
   function alterar<K extends keyof FormularioOcorrencia>(nome: K, valor: FormularioOcorrencia[K]) {
     setDados((anterior) => ({ ...anterior, [nome]: valor }))
     setErros((anteriores) => ({ ...anteriores, [nome]: undefined }))
   }
 
-  function aoEnviar(evento: FormEvent<HTMLFormElement>) {
+  async function aoEnviar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault()
+    setResultado(null)
     const novosErros = validar(dados)
     setErros(novosErros)
 
@@ -105,6 +135,18 @@ function NovaOcorrencia() {
     if (primeiroComErro) {
       document.getElementById(primeiroComErro)?.focus()
       return
+    }
+
+    setEnviando(true)
+    try {
+      const ocorrencia = await cadastrarOcorrencia(montarEntrada(dados), AbortSignal.timeout(TEMPO_LIMITE_MS))
+      setResultado({ tipo: 'sucesso', ocorrencia })
+      setDados(formularioVazio)
+    } catch (falha) {
+      const mensagem = falha instanceof Error ? falha.message : 'Não foi possível registrar a barreira.'
+      setResultado({ tipo: 'erro', mensagem })
+    } finally {
+      setEnviando(false)
     }
   }
 
@@ -264,8 +306,32 @@ function NovaOcorrencia() {
               <MensagemErro id="erro-flServicoEssencial" mensagem={erros.flServicoEssencial} />
             </fieldset>
 
-            <button type="submit" className="w-full rounded-lg bg-primary px-4 py-3 font-bold text-white sm:w-auto">
-              Registrar barreira
+            <div aria-live="polite">
+              {resultado?.tipo === 'sucesso' && (
+                <div role="status" className="rounded-lg border border-green-700 bg-green-50 p-4 text-green-900">
+                  <p className="font-bold">Barreira registrada com sucesso.</p>
+                  <p className="mt-1">
+                    Ocorrência nº {resultado.ocorrencia.cdOcorrencia}.{' '}
+                    <Link to={`/ocorrencias/${resultado.ocorrencia.cdOcorrencia}`} className="font-semibold underline">
+                      Ver ocorrência
+                    </Link>
+                  </p>
+                </div>
+              )}
+              {resultado?.tipo === 'erro' && (
+                <div role="alert" className="rounded-lg border border-red-700 bg-red-50 p-4 text-red-900">
+                  <p className="font-bold">Não foi possível registrar a barreira.</p>
+                  <p className="mt-1">{resultado.mensagem}</p>
+                </div>
+              )}
+            </div>
+
+            <button
+              type="submit"
+              disabled={enviando}
+              className="w-full rounded-lg bg-primary px-4 py-3 font-bold text-white disabled:cursor-wait disabled:opacity-70 sm:w-auto"
+            >
+              {enviando ? 'Enviando...' : 'Registrar barreira'}
             </button>
           </form>
         )}
