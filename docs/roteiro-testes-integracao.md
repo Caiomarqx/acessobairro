@@ -297,24 +297,36 @@ Evidências recomendadas:
 
 ## 10. Validações automatizadas existentes
 
-O Front-end possui 64 testes automatizados em 12 arquivos, incluindo:
+Em 18/11/2026, após a integração da PR #42, foram executados 73 testes automatizados em 14 arquivos, todos aprovados.
 
-- Home: 4 testes.
-- Sobre: 4 testes.
-- Integrantes: 4 testes.
-- Layout: 5 testes.
-- Cliente HTTP Java: 6 testes.
-- Cliente HTTP Flask: 6 testes.
-- Serviço de cadastro de ocorrências: 3 testes.
-- Mapeamento IA → Java: 8 testes.
-- Conversões IA ↔ Java: 11 testes.
-- Hook de consultas Java: 4 testes.
-- Páginas de ocorrências: 6 testes.
-- Utilitários de ocorrências: 3 testes.
+Os testes abrangem:
 
-Em 17/11/2026, os 64 testes passaram, o lint apresentou zero erros e avisos, e o build de produção foi concluído com sucesso.
+- Páginas Home, Sobre, Integrantes e Contato.
+- Layout, navegação e acessibilidade.
+- Consultas, listagem, filtros, paginação e detalhes.
+- Comunicação HTTP com a API Java.
+- Cliente HTTP da API Flask (com respostas simuladas).
+- Cadastro de ocorrências e tratamento de erros.
+- Mapeamento de categorias entre Java e IA.
+- Conversões de dados entre Java e IA.
+- Hook de consultas, cancelamento e timeout.
+- Utilitários de ocorrências.
+- RNF-07: prevenção de envios simultâneos e liberação de nova tentativa após falha.
 
-Os testes automatizados utilizam respostas simuladas quando necessário e não substituem a validação com as APIs reais.
+Resultados da validação:
+
+- Vitest: 73 testes aprovados em 14 arquivos.
+- Oxlint: 0 erros e 0 avisos.
+- Build TypeScript/Vite: aprovado.
+- GitHub Actions da PR #42: concluído com sucesso.
+
+A PR #42 foi integrada à main em 18/11/2026.
+
+No ensaio manual complementar do RNF-07, com rede Slow 4G e viewport 390 × 844, um duplo clique relatado resultou em apenas um POST HTTP 201 para a API Java de demonstração, com confirmação da ocorrência fictícia nº 22. Evidências: Figuras A33 e A34 do relatório de Engenharia.
+
+O intervalo exato entre os cliques não foi cronometrado, portanto o limite inferior a 500 ms ainda não possui comprovação temporal direta.
+
+Os testes automatizados utilizam respostas simuladas quando necessário e não substituem a validação com as APIs reais. A integração completa da API Flask permanece pendente.
 
 ## 11. Critérios para conclusão
 
@@ -333,4 +345,4 @@ Considerar a integração validada somente quando:
 - [ ] Validar o cadastro de ocorrências integrado ao Java e à IA Flask.
 
 **Documento preparado em 12/11/2026.**
-**Execução integrada: pendente.**
+**Situação em 18/11/2026:** integração Java com consultas GET e cadastro POST validada no Front publicado utilizando o ambiente de demonstração. INT-06 e RNF-07 verificados nos cenários descritos. Integração completa Flask/IA e homologações finais permanecem pendentes.
