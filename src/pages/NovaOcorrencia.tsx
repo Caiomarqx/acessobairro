@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import type { FormEvent } from 'react'
 import { Link } from 'react-router-dom'
 import { ErrorState, LoadingState } from '../components/FeedbackStates'
@@ -119,6 +119,7 @@ function NovaOcorrencia() {
   const [erros, setErros] = useState<ErrosFormulario>({})
   const [enviando, setEnviando] = useState(false)
   const [resultado, setResultado] = useState<ResultadoEnvio | null>(null)
+  const envioEmAndamento = useRef(false)
 
   function alterar<K extends keyof FormularioOcorrencia>(nome: K, valor: FormularioOcorrencia[K]) {
     setDados((anterior) => ({ ...anterior, [nome]: valor }))
@@ -127,6 +128,7 @@ function NovaOcorrencia() {
 
   async function aoEnviar(evento: FormEvent<HTMLFormElement>) {
     evento.preventDefault()
+    if (envioEmAndamento.current) return
     setResultado(null)
     const novosErros = validar(dados)
     setErros(novosErros)
@@ -137,6 +139,7 @@ function NovaOcorrencia() {
       return
     }
 
+    envioEmAndamento.current = true
     setEnviando(true)
     try {
       const ocorrencia = await cadastrarOcorrencia(montarEntrada(dados), AbortSignal.timeout(TEMPO_LIMITE_MS))
@@ -146,6 +149,7 @@ function NovaOcorrencia() {
       const mensagem = falha instanceof Error ? falha.message : 'Não foi possível registrar a barreira.'
       setResultado({ tipo: 'erro', mensagem })
     } finally {
+      envioEmAndamento.current = false
       setEnviando(false)
     }
   }
