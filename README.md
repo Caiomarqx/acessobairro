@@ -85,7 +85,7 @@ Para executar os testes:
 
 ### Testes implementados
 
-Em 19/11/2026, após a implementação da FAQ, o projeto possui **78 testes automatizados aprovados em 15 arquivos**, distribuídos da seguinte forma:
+Em 19/11/2026, após a implementação da FAQ e da integração opcional com IA, o projeto possui **85 testes automatizados aprovados em 17 arquivos**, distribuídos da seguinte forma:
 
 - **Home (4 testes):** conteúdo principal, navegação e identificação do projeto.
 - **Sobre (4 testes):** apresentação da solução e informações acadêmicas.
@@ -102,6 +102,8 @@ Em 19/11/2026, após a implementação da FAQ, o projeto possui **78 testes auto
 - **Utilitários de ocorrências (3 testes):** filtros, ordenação e datas.
 - **Novo cadastro de ocorrências (2 testes):** proteção contra duplo envio e liberação de nova tentativa após falha.
 - **FAQ (5 testes):** exibição do título e das categorias, apresentação das perguntas, abertura e fechamento de respostas, comportamento de pergunta única aberta e atributos de acessibilidade do acordeão.
+- **Serviço de sugestão IA (4 testes):** conversão de dados, validação de entradas e tratamento de respostas.
+- **Integração da IA no formulário (3 testes):** aplicação das sugestões, falha da Flask sem bloquear o cadastro e rejeição de passagem alternativa desconhecida.
 
 A validação realizada em 19/11/2026 apresentou:
 
@@ -112,7 +114,7 @@ A validação realizada em 19/11/2026 apresentou:
 
 Os testes automatizados utilizam respostas simuladas quando necessário e não realizam alterações no banco Oracle.
 
-A integração com a API Java foi validada em produção, incluindo cadastro e recuperação de ocorrências na API de demonstração. A comunicação completa com a API Flask ainda depende de sua publicação e integração ao formulário.
+A integração com a API Java foi validada em produção. O Front-end já possui um fluxo opcional de análise com IA, com testes automatizados utilizando respostas simuladas. A integração real com a Flask ainda depende da publicação da API, da configuração de VITE_IA_API_URL e da validação ponta a ponta.
 
 ### Validação automática
 
@@ -243,7 +245,7 @@ Na Vercel, as variáveis precisam ser configuradas nas configurações do projet
 - **RNF-07 — Proteção contra duplo envio (18/11/2026):** PR #42 integrada à `main`, adicionando trava com `useRef` e dois testes automatizados para envios simultâneos e nova tentativa após falha.
 - **RNF-07 — Teste manual complementar:** em ambiente mobile de 390 × 844 e rede Slow 4G, o duplo clique relatado resultou em somente um POST `/ocorrencias`, HTTP 201, com confirmação da ocorrência fictícia nº 22. Os Headers confirmaram a API Java de demonstração. Evidências: Figuras A33 e A34.
 - **Limitação do RNF-07:** o intervalo exato entre os dois cliques não foi cronometrado; o ensaio manual não comprova formalmente o limite inferior a 500 ms.
-- **Pendente:** publicação e integração completa da API Flask/IA, conferência final da FAQ e proteção dos endpoints de escrita da API de demonstração antes de qualquer utilização real.
+- **Pendente:** publicação e teste real da API Flask/IA, configuração da URL no Front-end e proteção dos endpoints de escrita da API Java de demonstração antes de qualquer utilização real. A FAQ já foi concluída, validada e publicada.
 
 O PR #11 foi integrado à `main` no commit `e559a51`, e as páginas de consulta estão publicadas em https://acessobairro.vercel.app.
 

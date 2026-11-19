@@ -36,7 +36,7 @@ const categoriasFAQ = [
         pergunta:
           "Quais informações são necessárias para registrar uma ocorrência?",
         resposta:
-          "Para registrar uma ocorrência, preencha todos os campos: usuário, bairro, categoria, endereço aproximado, descrição da barreira, impacto de 1 a 5, existência de passagem alternativa e proximidade de serviço essencial. Caso não saiba se existe passagem alternativa, selecione 'Não sei'.",
+          "Para registrar uma ocorrência, preencha todos os campos: usuário, bairro, categoria, endereço aproximado, descrição da barreira, impacto de 1 a 5, existência de passagem alternativa e proximidade de serviço essencial. Se você não souber se existe passagem alternativa, poderá selecionar 'Não sei', mas precisará confirmar essa informação para concluir o cadastro.",
       },
       {
         pergunta: "Como posso consultar as ocorrências registradas?",

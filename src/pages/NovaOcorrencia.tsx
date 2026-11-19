@@ -4,6 +4,9 @@ import { Link } from 'react-router-dom'
 import { ErrorState, LoadingState } from '../components/FeedbackStates'
 import { useConsultaApi } from '../hooks/useConsultaApi'
 import { cadastrarOcorrencia } from '../services/ocorrenciasService'
+import { obterSugestaoIA } from '../services/sugestaoIA'
+import { localizarCategoriaJava } from '../utils/mapeamentoIAJava'
+import type { AnaliseRelatoSaidaIA } from '../types/ia'
 import type {
   BairroSaidaDTO,
   CategoriaSaidaDTO,
@@ -86,13 +89,23 @@ function validar(dados: FormularioOcorrencia): ErrosFormulario {
   const impacto = Number(dados.nrImpacto)
   if (!Number.isInteger(impacto) || impacto < 1 || impacto > 5) erros.nrImpacto = 'Escolha um impacto de 1 a 5.'
 
-  if (!dados.flPassagemAlternativa) erros.flPassagemAlternativa = 'Informe se existe passagem alternativa.'
+
+  if (!dados.flPassagemAlternativa) {
+    erros.flPassagemAlternativa =
+      'Informe se existe passagem alternativa.'
+  } else if (dados.flPassagemAlternativa === 'NAO_SEI') {
+    erros.flPassagemAlternativa =
+      'O cadastro ainda não aceita "Não sei". Confirme se existe passagem alternativa antes de registrar.'
+  }
   if (!dados.flServicoEssencial) erros.flServicoEssencial = 'Informe se fica perto de um serviço essencial.'
 
   return erros
 }
 
-function montarEntrada(dados: FormularioOcorrencia): OcorrenciaEntradaDTO {
+function montarEntrada(
+  dados: FormularioOcorrencia,
+  analise: AnaliseRelatoSaidaIA | null,
+): OcorrenciaEntradaDTO {
   return {
     cdUsuario: Number(dados.cdUsuario),
     cdBairro: Number(dados.cdBairro),
@@ -102,6 +115,8 @@ function montarEntrada(dados: FormularioOcorrencia): OcorrenciaEntradaDTO {
     nrImpacto: Number(dados.nrImpacto),
     flPassagemAlternativa: dados.flPassagemAlternativa === 'S' ? 'S' : 'N',
     flServicoEssencial: dados.flServicoEssencial === 'S' ? 'S' : 'N',
+    nmCategoriaSugerida: analise?.categoria_sugerida ?? null,
+    tpPrioridadeSugerida: analise?.prioridade_sugerida ?? null,
   }
 }
 
@@ -120,10 +135,59 @@ function NovaOcorrencia() {
   const [enviando, setEnviando] = useState(false)
   const [resultado, setResultado] = useState<ResultadoEnvio | null>(null)
   const envioEmAndamento = useRef(false)
+  const [analiseIA, setAnaliseIA] =
+    useState<AnaliseRelatoSaidaIA | null>(null)
+  const [erroIA, setErroIA] = useState<string | null>(null)
+  const [analisandoIA, setAnalisandoIA] = useState(false)
+  const versaoAnaliseIA = useRef(0)
 
   function alterar<K extends keyof FormularioOcorrencia>(nome: K, valor: FormularioOcorrencia[K]) {
     setDados((anterior) => ({ ...anterior, [nome]: valor }))
     setErros((anteriores) => ({ ...anteriores, [nome]: undefined }))
+    if (
+      nome === 'dsOcorrencia' ||
+      nome === 'nrImpacto' ||
+      nome === 'flPassagemAlternativa'
+    ) {
+      versaoAnaliseIA.current += 1
+      setAnaliseIA(null)
+      setErroIA(null)
+      setAnalisandoIA(false)
+    }
+  }
+
+  async function aoAnalisarIA() {
+    if (analisandoIA || enviando) return
+
+    const versao = ++versaoAnaliseIA.current
+    setAnalisandoIA(true)
+    setErroIA(null)
+    setAnaliseIA(null)
+
+    try {
+      const resposta = await obterSugestaoIA(
+        dados.dsOcorrencia,
+        Number(dados.nrImpacto),
+        dados.flPassagemAlternativa,
+        AbortSignal.timeout(70000),
+      )
+
+      if (versao === versaoAnaliseIA.current) {
+        setAnaliseIA(resposta)
+      }
+    } catch (falha) {
+      if (versao === versaoAnaliseIA.current) {
+        setErroIA(
+          falha instanceof Error
+            ? falha.message
+            : 'Não foi possível consultar a IA.',
+        )
+      }
+    } finally {
+      if (versao === versaoAnaliseIA.current) {
+        setAnalisandoIA(false)
+      }
+    }
   }
 
   async function aoEnviar(evento: FormEvent<HTMLFormElement>) {
@@ -139,12 +203,19 @@ function NovaOcorrencia() {
       return
     }
 
+    versaoAnaliseIA.current += 1
+    setAnalisandoIA(false)
     envioEmAndamento.current = true
     setEnviando(true)
     try {
-      const ocorrencia = await cadastrarOcorrencia(montarEntrada(dados), AbortSignal.timeout(TEMPO_LIMITE_MS))
+      const ocorrencia = await cadastrarOcorrencia(
+        montarEntrada(dados, analiseIA),
+        AbortSignal.timeout(TEMPO_LIMITE_MS),
+      )
       setResultado({ tipo: 'sucesso', ocorrencia })
       setDados(formularioVazio)
+      setAnaliseIA(null)
+      setErroIA(null)
     } catch (falha) {
       const mensagem = falha instanceof Error ? falha.message : 'Não foi possível registrar a barreira.'
       setResultado({ tipo: 'erro', mensagem })
@@ -164,6 +235,13 @@ function NovaOcorrencia() {
 
   const carregando = usuarios.carregando || bairros.carregando || categorias.carregando
   const erro = usuarios.erro || bairros.erro || categorias.erro
+
+  const categoriaSugeridaJava = analiseIA
+    ? localizarCategoriaJava(
+        analiseIA.categoria_sugerida,
+        categorias.dados ?? [],
+      )
+    : null
 
   return (
     <main className="bg-background px-4 py-12 sm:px-6">
@@ -309,6 +387,76 @@ function NovaOcorrencia() {
               </div>
               <MensagemErro id="erro-flServicoEssencial" mensagem={erros.flServicoEssencial} />
             </fieldset>
+
+            <section
+              aria-label="Sugestões de inteligência artificial"
+              className="space-y-3 rounded-xl border border-slate-200 bg-slate-50 p-4"
+            >
+              <h2 className="text-lg font-bold text-primary">
+                Análise com inteligência artificial
+              </h2>
+
+              <p className="text-sm text-slate-700">
+                Opcional: a IA pode sugerir categoria e prioridade.
+                Você continua responsável pela categoria escolhida.
+              </p>
+
+              <button
+                type="button"
+                onClick={aoAnalisarIA}
+                disabled={analisandoIA || enviando}
+                className="rounded-lg bg-secondary px-4 py-3 font-semibold text-white disabled:opacity-60"
+              >
+                {analisandoIA
+                  ? 'Analisando relato...'
+                  : 'Analisar com IA'}
+              </button>
+
+              {erroIA && (
+                <p role="alert" className="text-sm text-red-700">
+                  {erroIA} Você ainda pode registrar a barreira manualmente.
+                </p>
+              )}
+
+              {analiseIA && (
+                <div role="status" className="space-y-2">
+                  <p>
+                    <strong>Categoria sugerida:</strong>{' '}
+                    {categoriaSugeridaJava?.nmCategoria ??
+                      analiseIA.categoria_sugerida}
+                  </p>
+
+                  <p>
+                    <strong>Prioridade sugerida:</strong>{' '}
+                    {analiseIA.prioridade_sugerida}
+                  </p>
+
+                  {categoriaSugeridaJava ? (
+                    <button
+                      type="button"
+                      className="rounded-lg border border-secondary px-4 py-2 font-semibold text-primary"
+                      onClick={() =>
+                        alterar(
+                          'cdCategoria',
+                          String(categoriaSugeridaJava.cdCategoria),
+                        )
+                      }
+                    >
+                      Usar categoria sugerida
+                    </button>
+                  ) : (
+                    <p className="text-sm text-amber-800">
+                      Categoria não localizada no cadastro Java.
+                      Escolha uma categoria manualmente.
+                    </p>
+                  )}
+
+                  <p className="text-sm text-slate-700">
+                    A análise é uma sugestão automática e pode conter erros.
+                  </p>
+                </div>
+              )}
+            </section>
 
             <div aria-live="polite">
               {resultado?.tipo === 'sucesso' && (
