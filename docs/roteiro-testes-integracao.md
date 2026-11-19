@@ -7,7 +7,7 @@ Validar a comunicação entre o Front-end React, a API REST Java e o banco Oracl
 
 Este roteiro complementa os testes automatizados do Front-end e a documentação do contrato da API.
 
-**Estado atual: VALIDAÇÃO PARCIAL CONCLUÍDA — CONSULTAS JAVA VALIDADAS EM PRODUÇÃO.**
+**Estado de 19/11/2026: CONSULTAS JAVA, CADASTRO DEMONSTRATIVO E ANÁLISE FLASK/IA VALIDADOS NOS FLUXOS OBSERVADOS; PERSISTÊNCIA DAS SUGESTÕES NO JAVA AINDA NÃO ENSAIADA.**
 
 Em 16/11/2026, a integração de leitura foi validada inicialmente no ambiente local, utilizando as telas desenvolvidas no PR #11 e a API Java publicada no Render.
 
@@ -28,7 +28,7 @@ Foram verificados:
 
 A primeira tentativa de carregamento da ocorrência 8 apresentou um erro temporário, mas a consulta posterior funcionou. A causa não foi confirmada e poderá ser investigada caso se repita.
 
-**Ainda pendente:** validação do cadastro de ocorrências e comunicação real com a API Flask de Inteligência Artificial. Os testes realizados não incluíram operações de escrita no Oracle.
+**Atualização de 19/11:** a INT-03 (18/11) comprovou POST/201 e leitura posterior do cadastro Java em Oracle demo. A Flask foi publicada em https://acessobairro-ia.onrender.com, a análise real foi confirmada no React e a categoria sugerida aplicada no seletor da Vercel. A persistência de `nmCategoriaSugerida`/`tpPrioridadeSugerida` numa nova ocorrência Java permanece sem teste específico; os ensaios de 19/11 não enviaram cadastro.
 
 ## 2. Referências
 
@@ -47,7 +47,8 @@ A primeira tentativa de carregamento da ocorrência 8 apresentou um erro tempor�
 | API Java local | http://localhost:8080 | Não utilizada nesta validação |
 | API Java Render | https://acessobairro-api.onrender.com | Publicada; endpoints GET verificados |
 | Oracle | Banco compartilhado com Database | Consultado pela API Java, sem alterações |
-| API Flask | URL pública pendente | Publicação e integração pendentes |
+| API Flask/IA | https://acessobairro-ia.onrender.com | Publicada no Render; POST real `/api/analisar-relato` e integração Vercel validados em 19/11/2026 |
+| API Java DEMO | https://acessobairro-api-demo.onrender.com | POST/201 e GET posterior demonstrados com dados fictícios em 18/11; sem autenticação |
 
 A URL pública da API deve ser configurada no Front por meio de `VITE_API_URL`.
 
@@ -67,7 +68,7 @@ Antes dos testes integrados:
 - [x] Testes de consulta realizados em ambiente local e produção em 16/11/2026.
 - [ ] Confirmar eventuais ajustes finais do modelo de dados com a equipe.
 - [ ] Validar o fluxo de cadastro e as permissões dos endpoints de escrita.
-- [ ] Publicar a API Flask e configurar `VITE_IA_API_URL` em produção.
+- [x] Publicar a API Flask e configurar `VITE_IA_API_URL` em produção (19/11/2026).
 
 A primeira rodada deve usar apenas operações GET.
 
@@ -297,7 +298,7 @@ Evidências recomendadas:
 
 ## 10. Validações automatizadas existentes
 
-Em 18/11/2026, após a integração da PR #42, foram executados 73 testes automatizados em 14 arquivos, todos aprovados.
+Em 19/11/2026, após a integração das PRs #44 (FAQ) e #45 (IA), foram executados 85 testes automatizados em 17 arquivos, todos aprovados. A versão anterior de 18/11 tinha 73 testes/14 arquivos.
 
 Os testes abrangem:
 
@@ -315,10 +316,10 @@ Os testes abrangem:
 
 Resultados da validação:
 
-- Vitest: 73 testes aprovados em 14 arquivos.
+- Vitest: 85 testes aprovados em 17 arquivos.
 - Oxlint: 0 erros e 0 avisos.
 - Build TypeScript/Vite: aprovado.
-- GitHub Actions da PR #42: concluído com sucesso.
+- GitHub Actions das PRs #42, #44 e #45: concluídos com sucesso nos respectivos fluxos verificados.
 
 A PR #42 foi integrada à main em 18/11/2026.
 
@@ -326,7 +327,7 @@ No ensaio manual complementar do RNF-07, com rede Slow 4G e viewport 390 × 844,
 
 O intervalo exato entre os cliques não foi cronometrado, portanto o limite inferior a 500 ms ainda não possui comprovação temporal direta.
 
-Os testes automatizados utilizam respostas simuladas quando necessário e não substituem a validação com as APIs reais. A integração completa da API Flask permanece pendente.
+Os testes automatizados utilizam respostas simuladas quando necessário; além deles, a API Flask real foi testada via PowerShell e navegador local/publicado em 19/11. A gravação dos campos sugeridos pela IA num novo POST Java não foi incluída nesse ensaio.
 
 ## 11. Critérios para conclusão
 
@@ -342,7 +343,24 @@ Considerar a integração validada somente quando:
 - [x] Testes, lint e build foram aprovados após o merge do PR #11.
 - [ ] Consolidar prints e registros das evidências de integração.
 - [ ] Concluir a revisão de segurança dos endpoints de escrita.
-- [ ] Validar o cadastro de ocorrências integrado ao Java e à IA Flask.
+- [x] Validar separadamente o cadastro Java (POST/201 + GET da ocorrência nº18, INT-03) e a análise Flask/IA em produção até aplicação da categoria no seletor.
+- [ ] Validar o cadastro Java real incluindo os dois campos opcionais de sugestão de IA; não realizado nos testes de 19/11.
 
 **Documento preparado em 12/11/2026.**
-**Situação em 18/11/2026:** integração Java com consultas GET e cadastro POST validada no Front publicado utilizando o ambiente de demonstração. INT-06 e RNF-07 verificados nos cenários descritos. Integração completa Flask/IA e homologações finais permanecem pendentes.
+**Situação em 19/11/2026:** React publicado na Vercel com GET/POST Java demo já demonstrados e análise Flask/IA real aprovada no botão `Analisar com IA`. A categoria sugerida foi aplicada manualmente pelo usuário no formulário. O teste de persistência de sugestão no Java e a autenticação da API demo permanecem pendentes para uso não acadêmico.
+
+## 12. INT-07 — Análise Flask/IA em produção (19/11/2026)
+
+**Ambientes:** `https://acessobairro-ia.onrender.com` (API Flask, Render) e `https://acessobairro.vercel.app/ocorrencias/nova` (Front Vercel). Repositório Flask: `https://github.com/Caiomarqx/acessobairro-ia`.
+
+**Pré-condições verificadas:** dois arquivos `.joblib` do modelo de barreiras e prioridade carregados no Gunicorn; GET `/` retornou HTTP 200; `VITE_IA_API_URL` configurada na Vercel (`Production`) antes do merge da PR #45, após o qual o deployment automático para a `main` concluiu com estado `READY` (commit `006b5bb`).
+
+**Entrada do ensaio real:** `descricao = "Calcada com buraco grande e sem rampa para cadeira de rodas"`, `impacto = "ALTO"`, `rota_alternativa = "NAO"`. A requisição PowerShell `POST /api/analisar-relato` recebeu `categoria_sugerida = "RAMPA_AUSENTE"` e `prioridade_sugerida = "ALTA"`, junto aos valores de entrada.
+
+**Fluxo React observado:** na Vercel, usuário preencheu descrição, impacto 5 e passagem alternativa Não; acionou `Analisar com IA`; o painel exibiu categoria legível `Rampa ausente` e prioridade `ALTA`. O seletor Categoria permaneceu inicialmente em `Selecione`. Após acionar `Usar categoria sugerida`, passou para `Rampa ausente`. Isso prova o recebimento, a apresentação e a aplicação assistida, sem sobrescrever automaticamente a escolha do usuário.
+
+**Verificações complementares:** PR #45 com CI concluída com sucesso (lint, testes e build); localmente 85/85 testes em 17 arquivos, Oxlint 0 erros/avisos e build TypeScript/Vite aprovado; testes automatizados cobriram a falha da Flask sem impedir cadastro manual e a proibição de converter `Não sei` em `Não`.
+
+**Evidências:** Figuras A35–A37 do relatório de Engenharia e PR #45 (`https://github.com/Caiomarqx/acessobairro/pull/45`).
+
+**Limites:** o ensaio de 19/11 não realizou novo POST ` /ocorrencias` na API Java nem verificou leitura posterior dos campos `nmCategoriaSugerida` e `tpPrioridadeSugerida`; logo, persistência de IA no Oracle não está comprovada. A API demo Java admite escrita pública sem autenticação; o protótipo deve usar apenas dados fictícios. Os modelos foram treinados/avaliados com dados sintéticos e as previsões não equivalem a decisões de autoridade pública.
