@@ -259,7 +259,7 @@ O PR #11 foi integrado à `main` no commit `e559a51`, e as páginas de consulta 
 - **API Flask/IA publicada:** https://acessobairro-ia.onrender.com
 - **Repositório da IA:** https://github.com/Caiomarqx/acessobairro-ia
 - **Formulário com análise IA:** https://acessobairro.vercel.app/ocorrencias/nova
-- **Vídeo demonstrativo de Front-end (até 3 minutos):** pendente de gravação/publicação no YouTube; inserir o link antes da entrega.
+- **Vídeo demonstrativo de Front-end (até 3 minutos):** https://youtu.be/LZxKBwoRYy0
 - **Contato acadêmico do projeto:** [seção Contato da aplicação](https://acessobairro.vercel.app/contato) e [issues do GitHub](https://github.com/Caiomarqx/acessobairro/issues). Página Contato previamente validada no fluxo de navegação.
 
 ## Organização da equipe
