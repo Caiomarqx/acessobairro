@@ -85,7 +85,7 @@ Para executar os testes:
 
 ### Testes implementados
 
-Em 18/11/2026, após a integração da PR #42, o projeto possui **73 testes automatizados aprovados em 14 arquivos**, distribuídos da seguinte forma:
+Em 19/11/2026, após a implementação da FAQ, o projeto possui **78 testes automatizados aprovados em 15 arquivos**, distribuídos da seguinte forma:
 
 - **Home (4 testes):** conteúdo principal, navegação e identificação do projeto.
 - **Sobre (4 testes):** apresentação da solução e informações acadêmicas.
@@ -101,10 +101,11 @@ Em 18/11/2026, após a integração da PR #42, o projeto possui **73 testes auto
 - **Páginas de ocorrências (6 testes):** pesquisa, filtros, paginação, detalhes e erros.
 - **Utilitários de ocorrências (3 testes):** filtros, ordenação e datas.
 - **Novo cadastro de ocorrências (2 testes):** proteção contra duplo envio e liberação de nova tentativa após falha.
+- **FAQ (5 testes):** exibição do título e das categorias, apresentação das perguntas, abertura e fechamento de respostas, comportamento de pergunta única aberta e atributos de acessibilidade do acordeão.
 
-A validação realizada em 18/11/2026 apresentou:
+A validação realizada em 19/11/2026 apresentou:
 
-- **Vitest:** 73 testes aprovados em 14 arquivos.
+- **Vitest:** 78 testes aprovados em 15 arquivos.
 - **Oxlint:** 0 erros e 0 avisos.
 - **Build:** TypeScript e Vite compilados com sucesso.
 - **GitHub Actions:** validação da PR #42 concluída com sucesso.
@@ -142,10 +143,13 @@ acessobairro/
 ├── src/
 │   ├── assets/
 │   ├── components/
+│   │   ├── AccordionItem.tsx
 │   │   ├── FeedbackStates.tsx
 │   │   ├── Layout.tsx
 │   │   └── Layout.test.tsx
 │   ├── pages/
+│   │   ├── FAQ.tsx
+│   │   ├── FAQ.test.tsx
 │   │   ├── Home.tsx
 │   │   ├── Home.test.tsx
 │   │   ├── Sobre.tsx
@@ -167,7 +171,7 @@ acessobairro/
 ```
 
 
-A estrutura acima apresenta os arquivos centrais; há também componentes de ocorrência, rotas adicionais, hooks, testes e serviços de integração com Java e Flask. Contato e cadastro já foram integrados e verificados; a FAQ continua aguardando o conteúdo definitivo.
+A estrutura acima apresenta os arquivos centrais; há também componentes de ocorrência, rotas adicionais, hooks, testes e serviços de integração com Java e Flask. Contato, cadastro e FAQ já foram integrados e verificados.
 
 ## Rotas da aplicação
 
@@ -182,7 +186,7 @@ A estrutura acima apresenta os arquivos centrais; há também componentes de oco
 | `/ocorrencias/nova` | Cadastro de ocorrência |
 | `/ocorrencias/:id` | Detalhes da ocorrência |
 
-A rota `/faq` ainda requer conclusão; as demais rotas devem ser revalidadas após os últimos merges.
+As rotas devem ser revalidadas após os últimos merges.
 
 ## Listagem e detalhes de ocorrências
 
