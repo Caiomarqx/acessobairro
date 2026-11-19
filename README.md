@@ -22,7 +22,7 @@ A proposta permite registrar e consultar ocorrências como calçadas danificadas
 - React Testing Library
 - Oxlint
 
-O Front-end consulta a API REST Java (Spring Boot no Render) para listagem, filtros, detalhes e histórico. Em 18/11/2026, o formulário publicado na Vercel foi validado com uma operação real na API Java de demonstração: POST `/ocorrencias` retornou **HTTP 201 Created**, criando a ocorrência nº 18, recuperada depois nos detalhes e na listagem. A API original permanece em modo somente leitura; o ambiente demonstrativo utiliza apenas dados fictícios e não possui autenticação.
+O Front-end consulta a API REST Java (Spring Boot no Render) para listagem, filtros, detalhes e histórico. Em 18/11/2026, o cadastro real demonstrativo por POST `/ocorrencias` retornou **HTTP 201**, com recuperação da ocorrência fictícia nº18. Em 19/11, o fluxo opcional de IA foi validado na Vercel com a Flask no Render, incluindo a aplicação da categoria sugerida pelo usuário. A API Java original permanece em somente leitura; o ambiente demonstrativo utiliza apenas dados fictícios e não possui autenticação.
 
 ## Pré-requisitos
 
@@ -107,14 +107,14 @@ Em 19/11/2026, após a implementação da FAQ e da integração opcional com IA,
 
 A validação realizada em 19/11/2026 apresentou:
 
-- **Vitest:** 78 testes aprovados em 15 arquivos.
+- **Vitest:** 85 testes aprovados em 17 arquivos.
 - **Oxlint:** 0 erros e 0 avisos.
 - **Build:** TypeScript e Vite compilados com sucesso.
-- **GitHub Actions:** validação da PR #44 aprovada (lint, testes e build); conferir novamente após os ajustes finais.
+- **GitHub Actions:** validações das PRs #44 e #45 aprovadas; a PR #45 passou lint, testes e compilação.
 
 Os testes automatizados utilizam respostas simuladas quando necessário e não realizam alterações no banco Oracle.
 
-A integração com a API Java foi validada em produção. O Front-end já possui um fluxo opcional de análise com IA, com testes automatizados utilizando respostas simuladas. A integração real com a Flask ainda depende da publicação da API, da configuração de VITE_IA_API_URL e da validação ponta a ponta.
+A integração com a API Java de demonstração foi comprovada por POST/201 e recuperação posterior (INT-03, 18/11). Em 19/11, a Flask foi publicada no Render e a análise real foi demonstrada no React local e no site público da Vercel: categoria `RAMPA_AUSENTE` (`Rampa ausente`) e prioridade `ALTA`, com aplicação explícita da categoria pelo usuário. Os testes automatizados usam mocks; o teste real da IA não incluiu novo POST Java, portanto a persistência dos campos sugeridos no Oracle ainda não foi demonstrada.
 
 ### Validação automática
 
@@ -219,12 +219,12 @@ No arquivo `.env`, configure:
 
 ```env
 VITE_API_URL=https://acessobairro-api.onrender.com
-VITE_IA_API_URL=
+VITE_IA_API_URL=https://acessobairro-ia.onrender.com
 ```
 
 A variável `VITE_API_URL` determina a API Java usada. O exemplo acima aponta para a API original, somente leitura. Na INT-03 (18/11/2026), a Vercel foi configurada com `https://acessobairro-api-demo.onrender.com` e republicada para demonstrar escrita real. Preservar essa configuração durante a avaliação do cadastro.
 
-A variável `VITE_IA_API_URL` deverá receber a URL pública do Flask quando a equipe concluir sua publicação.
+A variável `VITE_IA_API_URL` aponta para a Flask já publicada em https://acessobairro-ia.onrender.com; ela está configurada no ambiente `Production` da Vercel e foi incorporada ao build automático gerado pelo merge da PR #45 (commit `006b5bb`).
 
 O arquivo `.env` é utilizado no ambiente local e não deve ser enviado ao Git.
 
@@ -236,7 +236,7 @@ Na Vercel, as variáveis precisam ser configuradas nas configurações do projet
 
 - API Java publicada e acessível no Render.
 - Consultas reais de ocorrências, detalhes e histórico validadas no Front e na versão publicada em produção.
-- Cliente HTTP da IA implementado com testes automatizados.
+- Cliente HTTP da IA e serviço de validação implementados e cobertos por testes automatizados; Flask publicada no Render.
 - Mapeamento das cinco categorias entre Flask e Java implementado.
 - Conversões de passagem alternativa implementadas.
 - INT-02 concluída no escopo de leitura em 18/11/2026: comparação direta Oracle × JSON GET da API Java para os IDs 1, 3, 5 e 9, sem divergências nos campos avaliados (evidências no documento de Engenharia e no `docs/roteiro-testes-integracao.md`).
@@ -245,7 +245,8 @@ Na Vercel, as variáveis precisam ser configuradas nas configurações do projet
 - **RNF-07 — Proteção contra duplo envio (18/11/2026):** PR #42 integrada à `main`, adicionando trava com `useRef` e dois testes automatizados para envios simultâneos e nova tentativa após falha.
 - **RNF-07 — Teste manual complementar:** em ambiente mobile de 390 × 844 e rede Slow 4G, o duplo clique relatado resultou em somente um POST `/ocorrencias`, HTTP 201, com confirmação da ocorrência fictícia nº 22. Os Headers confirmaram a API Java de demonstração. Evidências: Figuras A33 e A34.
 - **Limitação do RNF-07:** o intervalo exato entre os dois cliques não foi cronometrado; o ensaio manual não comprova formalmente o limite inferior a 500 ms.
-- **Pendente:** publicação e teste real da API Flask/IA, configuração da URL no Front-end e proteção dos endpoints de escrita da API Java de demonstração antes de qualquer utilização real. A FAQ já foi concluída, validada e publicada.
+- **IA em produção, 19/11/2026:** PR #45 integrada, Flask publicada, `VITE_IA_API_URL` configurada e botão `Analisar com IA` validado no site público. Para entrada fictícia, a API retornou `RAMPA_AUSENTE` e prioridade `ALTA`; o usuário aplicou a categoria sugerida no seletor. A FAQ foi concluída pela PR #44 e contém oito perguntas.
+- **Limitações:** os campos opcionais de IA ainda não tiveram persistência verificada num POST real Java; o ambiente Java de demonstração está publicamente gravável sem autenticação e deve usar apenas dados fictícios; o intervalo exato do ensaio RNF-07 não foi cronometrado.
 
 O PR #11 foi integrado à `main` no commit `e559a51`, e as páginas de consulta estão publicadas em https://acessobairro.vercel.app.
 
@@ -253,9 +254,13 @@ O PR #11 foi integrado à `main` no commit `e559a51`, e as páginas de consulta 
 
 - **Aplicação publicada (Vercel):** https://acessobairro.vercel.app
 - **Repositório público:** https://github.com/Caiomarqx/acessobairro
-- **API Java no Render:** https://acessobairro-api.onrender.com
-- **Vídeo demonstrativo de Front-end (até 3 minutos):** pendente de gravação/publicação no YouTube; inserir o link antes da entrega.
-- **Contato acadêmico do projeto:** [seção Contato da aplicação](https://acessobairro.vercel.app/contato) e [issues do GitHub](https://github.com/Caiomarqx/acessobairro/issues). A página Contato deve ser revisada antes da entrega.
+- **API Java original no Render (somente leitura):** https://acessobairro-api.onrender.com
+- **API Java de demonstração (escrita com dados fictícios):** https://acessobairro-api-demo.onrender.com
+- **API Flask/IA publicada:** https://acessobairro-ia.onrender.com
+- **Repositório da IA:** https://github.com/Caiomarqx/acessobairro-ia
+- **Formulário com análise IA:** https://acessobairro.vercel.app/ocorrencias/nova
+- **Vídeo demonstrativo de Front-end (até 3 minutos):** https://youtu.be/LZxKBwoRYy0
+- **Contato acadêmico do projeto:** [seção Contato da aplicação](https://acessobairro.vercel.app/contato) e [issues do GitHub](https://github.com/Caiomarqx/acessobairro/issues). Página Contato previamente validada no fluxo de navegação.
 
 ## Organização da equipe
 
@@ -390,7 +395,7 @@ Foram testados:
 
 ### API Flask — Inteligência Artificial
 
-O Front-end também possui uma camada preparada para consumir o endpoint `POST /api/analisar-relato`.
+O Front-end consome o endpoint Flask `POST /api/analisar-relato` em https://acessobairro-ia.onrender.com. A análise é opcional e retorna categoria e prioridade sugeridas, que não alteram automaticamente a categoria selecionada pelo usuário.
 
 Foram implementados:
 
@@ -401,7 +406,7 @@ Foram implementados:
 
 Essas funcionalidades possuem testes automatizados.
 
-A regra de conversão de impacto foi confirmada com a equipe de IA e implementada no Front-end. A publicação da API Flask, a validação do endpoint real e a conexão com o formulário de cadastro ainda estão pendentes.
+A regra de impacto (1–2: `BAIXO`; 3: `MEDIO`; 4–5: `ALTO`) e a conversão de passagem (`S`/`N` para `SIM`/`NAO`) foram implementadas. Em 19/11, a rota real respondeu com `RAMPA_AUSENTE`/`ALTA` e a Vercel apresentou/aplicou a categoria. Se a Flask falhar, o cadastro manual continua utilizável. A opção `Não sei` não é enviada como `Não`; sua confirmação é exigida para concluir o cadastro. Os testes de interface demonstraram o envio simulado dos campos de IA ao Java, mas a persistência real não foi testada.
 
 ### Cuidados de segurança
 
