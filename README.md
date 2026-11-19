@@ -108,7 +108,7 @@ A validação realizada em 19/11/2026 apresentou:
 - **Vitest:** 78 testes aprovados em 15 arquivos.
 - **Oxlint:** 0 erros e 0 avisos.
 - **Build:** TypeScript e Vite compilados com sucesso.
-- **GitHub Actions:** validação da PR #42 concluída com sucesso.
+- **GitHub Actions:** validação da PR #44 aprovada (lint, testes e build); conferir novamente após os ajustes finais.
 
 Os testes automatizados utilizam respostas simuladas quando necessário e não realizam alterações no banco Oracle.
 

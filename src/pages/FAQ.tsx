@@ -36,7 +36,7 @@ const categoriasFAQ = [
         pergunta:
           "Quais informações são necessárias para registrar uma ocorrência?",
         resposta:
-          "O registro pode incluir o bairro, um endereço ou ponto de referência aproximado, a descrição do problema, sua categoria e o impacto observado. Também podem ser informadas a existência de uma passagem alternativa e a proximidade de serviços essenciais.",
+          "Para registrar uma ocorrência, preencha todos os campos: usuário, bairro, categoria, endereço aproximado, descrição da barreira, impacto de 1 a 5, existência de passagem alternativa e proximidade de serviço essencial. Caso não saiba se existe passagem alternativa, selecione 'Não sei'.",
       },
       {
         pergunta: "Como posso consultar as ocorrências registradas?",
@@ -46,13 +46,13 @@ const categoriasFAQ = [
       {
         pergunta: "O que significam os status das ocorrências?",
         resposta:
-          "ABERTA indica que a ocorrência foi registrada na plataforma. EM_ANALISE significa que o registro está sendo avaliado pelos responsáveis pelo sistema. ENCERRADA indica que o registro foi encerrado administrativamente.",
+          "ABERTA indica que a ocorrência foi registrada. EM_ANALISE significa que ela está sendo avaliada. RESOLVIDA indica que foi marcada como resolvida segundo informações da comunidade. ARQUIVADA significa que foi encerrada administrativamente. Esses status não representam confirmação oficial de reparo.",
       },
       {
         pergunta:
-          "Uma ocorrência encerrada significa que o problema foi resolvido?",
+          "O status RESOLVIDA significa que a barreira foi consertada?",
         resposta:
-          "Não necessariamente. O encerramento representa uma atualização administrativa dentro da plataforma e não comprova que a barreira física foi removida ou que houve algum reparo no local.",
+          "Não necessariamente. O status RESOLVIDA reflete informações registradas na plataforma e não comprova que houve reparo no local ou intervenção da prefeitura.",
       },
     ],
   },
