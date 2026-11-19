@@ -85,24 +85,33 @@ Para executar os testes:
 
 ### Testes implementados
 
-A distribuição abaixo descreve os **64 testes automatizados da etapa anterior (12 arquivos)**. A equipe relatou **74 testes** após as mudanças de 18/11/2026; a distribuição por arquivo ainda precisa ser recontada a partir do CI mais recente:
+Em 18/11/2026, após a integração da PR #42, o projeto possui **73 testes automatizados aprovados em 14 arquivos**, distribuídos da seguinte forma:
 
-- **Home (4 testes):** título principal, navegação e identificação de conteúdo demonstrativo.
-- **Sobre (4 testes):** apresentação do projeto, navegação e aviso sobre o caráter acadêmico.
-- **Integrantes (4 testes):** identificação acadêmica, nomes e RMs da equipe, áreas de atuação e navegação para a página Sobre.
-- **Layout (5 testes):** acessibilidade, navegação, menu responsivo e link para Integrantes nos menus desktop e mobile.
-- **Cliente HTTP Java (6 testes):** respostas JSON, erros HTTP, configuração da API e validação de caminhos.
-- **Cliente HTTP Flask (6 testes):** comunicação com a IA, envio de JSON, tratamento de erros, configuração e cancelamento.
-- **Serviço de cadastro de ocorrências (3 testes):** envio de cadastro via POST com JSON, tratamento de erros de validação e ausência de configuração da API.
-- **Mapeamento IA → Java (8 testes):** correspondência das cinco categorias, normalização de nomes e utilização de IDs retornados pela API.
-- **Conversões IA ↔ Java (11 testes):** conversão de passagem alternativa entre S/N e SIM/NAO, conversão de impacto numérico (1 a 5) para BAIXO/MEDIO/ALTO e rejeição de valores inválidos.
-- **Hook de consultas Java (4 testes):** cancelamento de requisições antigas, timeout de 75 segundos, ausência de configuração e respostas demoradas.
-- **Páginas de ocorrências (6 testes):** pesquisa, filtros, navegação, paginação, lista vazia, erros HTTP e recuperação do histórico.
-- **Utilitários de ocorrências (3 testes):** combinação de filtros, ordenação e formatação de datas.
+- **Home (4 testes):** conteúdo principal, navegação e identificação do projeto.
+- **Sobre (4 testes):** apresentação da solução e informações acadêmicas.
+- **Integrantes (4 testes):** identificação e responsabilidades da equipe.
+- **Layout (5 testes):** navegação, menu responsivo e acessibilidade.
+- **Contato (5 testes):** informações de contato e navegação por teclado.
+- **Cliente HTTP Java (8 testes):** comunicação, configuração e tratamento de erros.
+- **Cliente HTTP Flask (6 testes):** integração preparada com IA e tratamento de respostas.
+- **Serviço de cadastro (3 testes):** envio de ocorrências e tratamento de erros.
+- **Mapeamento IA → Java (8 testes):** correspondência de categorias e identificadores.
+- **Conversões IA ↔ Java (11 testes):** normalização de impacto e passagem alternativa.
+- **Hook de consultas Java (4 testes):** carregamento, cancelamento e timeout.
+- **Páginas de ocorrências (6 testes):** pesquisa, filtros, paginação, detalhes e erros.
+- **Utilitários de ocorrências (3 testes):** filtros, ordenação e datas.
+- **Novo cadastro de ocorrências (2 testes):** proteção contra duplo envio e liberação de nova tentativa após falha.
+
+A validação realizada em 18/11/2026 apresentou:
+
+- **Vitest:** 73 testes aprovados em 14 arquivos.
+- **Oxlint:** 0 erros e 0 avisos.
+- **Build:** TypeScript e Vite compilados com sucesso.
+- **GitHub Actions:** validação da PR #42 concluída com sucesso.
 
 Os testes automatizados utilizam respostas simuladas quando necessário e não realizam alterações no banco Oracle.
 
-A integração com a API Java foi validada localmente e em produção após o merge do PR #11. A comunicação completa com a API Flask ainda depende de sua publicação e integração ao formulário.
+A integração com a API Java foi validada em produção, incluindo cadastro e recuperação de ocorrências na API de demonstração. A comunicação completa com a API Flask ainda depende de sua publicação e integração ao formulário.
 
 ### Validação automática
 
@@ -225,8 +234,12 @@ Na Vercel, as variáveis precisam ser configuradas nas configurações do projet
 - Mapeamento das cinco categorias entre Flask e Java implementado.
 - Conversões de passagem alternativa implementadas.
 - INT-02 concluída no escopo de leitura em 18/11/2026: comparação direta Oracle × JSON GET da API Java para os IDs 1, 3, 5 e 9, sem divergências nos campos avaliados (evidências no documento de Engenharia e no `docs/roteiro-testes-integracao.md`).
-- **INT-03 concluída no fluxo central (18/11/2026):** formulário do PR #40 executou POST real na Vercel para a API Java demo, com **HTTP 201** e `Location: /ocorrencias/18`. A ocorrência foi recuperada nos detalhes e na listagem, que passou de 16 para 17 registros (evidências A24–A29 no relatório de Engenharia).
-- **Pendente:** integração pública de Flask/IA, testes complementares de duplo envio, erros inválidos e controles de acesso da API demo antes de qualquer uso real.
+- **INT-03 concluída no fluxo central (18/11/2026):** formulário do PR #40 executou POST real na Vercel para a API Java demo, com **HTTP 201** e `Location: /ocorrencias/18`. A ocorrência foi recuperada nos detalhes e na listagem, que passou de 16 para 17 registros (Evidências: A24–A29 no relatório de Engenharia).
+- **INT-06 — Validação de dados inválidos (18/11/2026):** requisição POST com JSON vazio para a API Java de demonstração retornou HTTP 400 e resposta estruturada `{"status":400,"mensagem":"O impacto é obrigatório"}`. Evidência: Figura A32 do relatório de Engenharia.
+- **RNF-07 — Proteção contra duplo envio (18/11/2026):** PR #42 integrada à `main`, adicionando trava com `useRef` e dois testes automatizados para envios simultâneos e nova tentativa após falha.
+- **RNF-07 — Teste manual complementar:** em ambiente mobile de 390 × 844 e rede Slow 4G, o duplo clique relatado resultou em somente um POST `/ocorrencias`, HTTP 201, com confirmação da ocorrência fictícia nº 22. Os Headers confirmaram a API Java de demonstração. Evidências: Figuras A33 e A34.
+- **Limitação do RNF-07:** o intervalo exato entre os dois cliques não foi cronometrado; o ensaio manual não comprova formalmente o limite inferior a 500 ms.
+- **Pendente:** publicação e integração completa da API Flask/IA, conferência final da FAQ e proteção dos endpoints de escrita da API de demonstração antes de qualquer utilização real.
 
 O PR #11 foi integrado à `main` no commit `e559a51`, e as páginas de consulta estão publicadas em https://acessobairro.vercel.app.
 
