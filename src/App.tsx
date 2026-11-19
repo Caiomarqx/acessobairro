@@ -4,6 +4,7 @@ import Layout from './components/Layout'
 import Home from './pages/Home'
 import Sobre from './pages/Sobre'
 import Integrantes from './pages/Integrantes'
+import FAQ from './pages/FAQ'
 import Ocorrencias from './pages/Ocorrencias'
 import DetalhesOcorrencia from './pages/DetalhesOcorrencia'
 import Contato from './pages/Contato'
@@ -41,7 +42,7 @@ function App() {
 
           <Route path="sobre" element={<Sobre />} />
           <Route path="integrantes" element={<Integrantes />} />
-          <Route path="faq" element={<PaginaEmConstrucao titulo="Perguntas frequentes" />} />
+          <Route path="faq" element={<FAQ />} />
           <Route path="contato" element={<Contato />} />
 
           <Route path="ocorrencias" element={<Ocorrencias />} />
