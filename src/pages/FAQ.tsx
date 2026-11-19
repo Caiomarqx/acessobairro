@@ -1,58 +1,64 @@
+import { useState } from "react";
+import AccordionItem from "../components/AccordionItem";
+
 const categoriasFAQ = [
   {
-    titulo: 'Sobre o AcessoBairro',
-    descricao: 'Entenda a proposta e o objetivo da plataforma.',
+    titulo: "Sobre o AcessoBairro",
+    descricao: "Entenda a proposta e o objetivo da plataforma.",
     perguntas: [
       {
-        pergunta: 'O que é o AcessoBairro?',
+        pergunta: "O que é o AcessoBairro?",
         resposta:
-          'O AcessoBairro é uma plataforma de participação cidadã que permite registrar e consultar barreiras de acessibilidade urbana. A proposta é dar visibilidade às dificuldades encontradas nos espaços públicos, especialmente por pessoas cadeirantes.',
+          "O AcessoBairro é uma plataforma de participação cidadã que permite registrar e consultar barreiras de acessibilidade urbana. A proposta é dar visibilidade às dificuldades encontradas nos espaços públicos, especialmente por pessoas cadeirantes.",
       },
       {
-        pergunta: 'Quem pode contribuir com a plataforma?',
+        pergunta: "Quem pode contribuir com a plataforma?",
         resposta:
-          'Qualquer cidadão interessado em acessibilidade pode contribuir compartilhando informações sobre barreiras encontradas na cidade. Pessoas com mobilidade reduzida, familiares, cuidadores e outros membros da comunidade também fazem parte do público que a iniciativa pretende atender.',
+          "Qualquer cidadão interessado em acessibilidade pode contribuir compartilhando informações sobre barreiras encontradas na cidade. Pessoas com mobilidade reduzida, familiares, cuidadores e outros membros da comunidade também fazem parte do público que a iniciativa pretende atender.",
       },
       {
-        pergunta: 'O AcessoBairro é um canal oficial da prefeitura?',
+        pergunta: "O AcessoBairro é um canal oficial da prefeitura?",
         resposta:
-          'Não. O AcessoBairro é um projeto acadêmico e não representa um sistema oficial de solicitações à prefeitura. Os registros são organizados e acompanhados dentro da própria plataforma.',
+          "Não. O AcessoBairro é um projeto acadêmico e não representa um sistema oficial de solicitações à prefeitura. Os registros são organizados e acompanhados dentro da própria plataforma.",
       },
     ],
   },
   {
-    titulo: 'Registro e acompanhamento',
-    descricao: 'Saiba como compartilhar e consultar ocorrências.',
+    titulo: "Registro e acompanhamento",
+    descricao: "Saiba como compartilhar e consultar ocorrências.",
     perguntas: [
       {
-        pergunta: 'Que tipo de problema posso registrar?',
+        pergunta: "Que tipo de problema posso registrar?",
         resposta:
-          'Você pode relatar barreiras que dificultam a acessibilidade urbana, como calçadas danificadas, ausência de rampas e passagens obstruídas. O foco principal são os obstáculos que prejudicam a mobilidade de pessoas cadeirantes.',
+          "Você pode relatar barreiras que dificultam a acessibilidade urbana, como calçadas danificadas, ausência de rampas e passagens obstruídas. O foco principal são os obstáculos que prejudicam a mobilidade de pessoas cadeirantes.",
       },
       {
-        pergunta: 'Quais informações são necessárias para registrar uma ocorrência?',
+        pergunta:
+          "Quais informações são necessárias para registrar uma ocorrência?",
         resposta:
-          'O registro pode incluir o bairro, um endereço ou ponto de referência aproximado, a descrição do problema, sua categoria e o impacto observado. Também podem ser informadas a existência de uma passagem alternativa e a proximidade de serviços essenciais.',
+          "O registro pode incluir o bairro, um endereço ou ponto de referência aproximado, a descrição do problema, sua categoria e o impacto observado. Também podem ser informadas a existência de uma passagem alternativa e a proximidade de serviços essenciais.",
       },
       {
-        pergunta: 'Como posso consultar as ocorrências registradas?',
+        pergunta: "Como posso consultar as ocorrências registradas?",
         resposta:
-          'A plataforma disponibiliza uma listagem de ocorrências para consulta. Os registros podem ser organizados por critérios como bairro, categoria do problema e situação atual.',
+          "A plataforma disponibiliza uma listagem de ocorrências para consulta. Os registros podem ser organizados por critérios como bairro, categoria do problema e situação atual.",
       },
       {
-        pergunta: 'O que significam os status das ocorrências?',
+        pergunta: "O que significam os status das ocorrências?",
         resposta:
-          'ABERTA indica que a ocorrência foi registrada na plataforma. EM_ANALISE significa que o registro está sendo avaliado pelos responsáveis pelo sistema. ENCERRADA indica que o registro foi encerrado administrativamente.',
+          "ABERTA indica que a ocorrência foi registrada na plataforma. EM_ANALISE significa que o registro está sendo avaliado pelos responsáveis pelo sistema. ENCERRADA indica que o registro foi encerrado administrativamente.",
       },
       {
-        pergunta: 'Uma ocorrência encerrada significa que o problema foi resolvido?',
+        pergunta:
+          "Uma ocorrência encerrada significa que o problema foi resolvido?",
         resposta:
-          'Não necessariamente. O encerramento representa uma atualização administrativa dentro da plataforma e não comprova que a barreira física foi removida ou que houve algum reparo no local.',
+          "Não necessariamente. O encerramento representa uma atualização administrativa dentro da plataforma e não comprova que a barreira física foi removida ou que houve algum reparo no local.",
       },
     ],
-  }
-]
+  },
+];
 function FAQ() {
+  const [perguntaAberta, setPerguntaAberta] = useState<string | null>(null);
   return (
     <main className="min-h-screen bg-background">
       <section className="px-6 py-20 md:py-28">
@@ -62,22 +68,19 @@ function FAQ() {
           </span>
 
           <h1 className="mt-7 max-w-3xl text-4xl font-bold leading-tight tracking-tight text-primary md:text-6xl">
-            Perguntas frequentes sobre o{' '}
+            Perguntas frequentes sobre o{" "}
             <span className="text-secondary">AcessoBairro.</span>
           </h1>
 
           <p className="mt-7 max-w-2xl text-lg leading-8 text-slate-600">
-            Encontre respostas sobre a plataforma, o registro de
-            barreiras de acessibilidade e o acompanhamento das
-            ocorrências compartilhadas pela comunidade.
+            Encontre respostas sobre a plataforma, o registro de barreiras de
+            acessibilidade e o acompanhamento das ocorrências compartilhadas
+            pela comunidade.
           </p>
         </div>
       </section>
 
-      <section
-        aria-labelledby="titulo-faq"
-        className="bg-white px-6 py-20"
-      >
+      <section aria-labelledby="titulo-faq" className="bg-white px-6 py-20">
         <div className="mx-auto max-w-6xl">
           <h2
             id="titulo-faq"
@@ -87,8 +90,8 @@ function FAQ() {
           </h2>
 
           <p className="mt-4 max-w-2xl leading-8 text-slate-600">
-            Nesta seção você encontrará informações para
-            entender melhor o funcionamento do AcessoBairro.
+            Nesta seção você encontrará informações para entender melhor o
+            funcionamento do AcessoBairro.
           </p>
           <div className="mt-12 space-y-16">
             {categoriasFAQ.map((categoria, indice) => (
@@ -104,26 +107,24 @@ function FAQ() {
                     {categoria.titulo}
                   </h3>
 
-                  <p className="mt-2 text-slate-600">
-                    {categoria.descricao}
-                  </p>
+                  <p className="mt-2 text-slate-600">{categoria.descricao}</p>
                 </div>
 
-                <div className="mt-6 grid gap-5 md:grid-cols-2">
-                  {categoria.perguntas.map((item) => (
-                    <article
-                      key={item.pergunta}
-                      className="rounded-2xl border border-slate-200 bg-background p-6"
-                    >
-                      <h4 className="text-lg font-bold leading-7 text-primary">
-                        {item.pergunta}
-                      </h4>
-
-                      <p className="mt-4 leading-7 text-slate-600">
-                        {item.resposta}
-                      </p>
-                    </article>
-                  ))}
+                <div className="mt-6 grid gap-5">
+                  {categoria.perguntas.map((item, indicePergunta) => {
+                    const id = `${indice}-${indicePergunta}`;
+                    const aberto = perguntaAberta === id;
+                    return (
+                      <AccordionItem
+                        key={item.pergunta}
+                        id={id}
+                        pergunta={item.pergunta}
+                        resposta={item.resposta}
+                        aberto={aberto}
+                        aoAlternar={() => setPerguntaAberta(aberto ? null : id)}
+                      />
+                    );
+                  })}
                 </div>
               </section>
             ))}
@@ -131,7 +132,7 @@ function FAQ() {
         </div>
       </section>
     </main>
-  )
+  );
 }
 
-export default FAQ
+export default FAQ;
